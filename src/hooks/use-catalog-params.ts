@@ -4,7 +4,7 @@ import { ALL_CATEGORY, isCategoryFilter, type CategoryFilter } from '@/registry'
 /**
  * The catalog's URL-driven state (no router):
  * - `?category=` single category filter
- * - `?tags=a,b`  multi-tag filter (union / matches any)
+ * - `?tags=a,b`  multi-tag filter (intersection / must have all)
  * - `?q=`        free-text search
  *
  * Any of these clears the open component (`?component=`) so filtering returns

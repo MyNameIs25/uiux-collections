@@ -80,7 +80,7 @@ To add a **new library**, append an entry to `LIBRARIES` in `src/registry/librar
 All filter state lives in the URL via `useCatalogParams()` and combines as **category AND tags AND text**:
 
 - `?category=<id>` — single category (sidebar).
-- `?tags=a,b` — multiple tags, **union** (a component matches if it has *any* selected tag).
+- `?tags=a,b` — multiple tags, **intersection** (a component matches only if it has *all* selected tags; adding tags narrows results).
 - `?q=<text>` — free-text over name/description/tags.
 
 Tags are rendered as clickable chips (`TagPill`, no leading `#`) in two places: the `TagFilterBar` under the header (scoped to the current category, with per-tag counts, collapsing past 12 behind a `…` expander) and the details page. Clicking a tag toggles it in `?tags=`. Switching category clears tags (they're category-scoped). `getTagCounts(category)` and `filterShowcases(category, query, tags)` live in `registry.ts`.

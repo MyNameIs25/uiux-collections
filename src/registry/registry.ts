@@ -31,7 +31,8 @@ export function getShowcase(id: string): Showcase | undefined {
 
 /**
  * Filter the registry by category, a free-text query, and a set of tags.
- * Semantics: category (single) AND tags (union — matches any) AND query (text).
+ * Semantics: category (single) AND tags (intersection — must have all selected)
+ * AND query (text). Selecting more tags narrows the results.
  */
 export function filterShowcases(
   category: CategoryFilter,
@@ -39,10 +40,12 @@ export function filterShowcases(
   tags: string[] = [],
 ): Showcase[] {
   const q = query.trim().toLowerCase()
-  const tagSet = new Set(tags)
   return registry.filter((s) => {
     if (category !== ALL_CATEGORY && s.category !== category) return false
-    if (tagSet.size && !(s.tags ?? []).some((t) => tagSet.has(t))) return false
+    if (tags.length) {
+      const showcaseTags = new Set(s.tags ?? [])
+      if (!tags.every((t) => showcaseTags.has(t))) return false
+    }
     if (!q) return true
     const haystack = [s.name, s.description ?? '', ...(s.tags ?? [])]
       .join(' ')
