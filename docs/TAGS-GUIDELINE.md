@@ -55,7 +55,9 @@ Then optionally add a **descriptor** (group 5) for domain flavor.
 
 ### 2. Motion — the animation technique
 
-`parallax` · `marquee` · `reveal` · `stagger` · `morph` · `typewriter` · `particles` · `spring` · `wave` · `ripple` · `float` · `tilt` · `magnetic` · `spotlight` · `orbit` · `scramble`
+`parallax` · `marquee` · `reveal` · `stagger` · `morph` · `typewriter` · `particles` · `spring` · `wave` · `ripple` · `float` · `tilt` · `magnetic` · `spotlight` · `orbit` · `scramble` · `flip`
+
+> `flip` = a card/panel rotating in 3D (split-flap board, flip clock, flip card). Usually also `3d`.
 
 ### 3. Trigger — what starts the behavior
 

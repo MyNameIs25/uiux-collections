@@ -54,6 +54,34 @@ export const CUSTOM_UTILITIES: Record<string, CustomUtility> = {
   }
 }`,
   },
+  'animate-flip-down': {
+    name: 'animate-flip-down',
+    kind: 'animation',
+    file: 'src/styles/animations.css',
+    summary:
+      "Split-flap top half: rotates from flat to -90° on its bottom edge (pair with `origin-bottom`) so the old digit's top falls away.",
+    css: `@theme {
+  --animate-flip-down: flip-down 0.25s ease-in forwards;
+  @keyframes flip-down {
+    from { transform: rotateX(0deg); }
+    to   { transform: rotateX(-90deg); }
+  }
+}`,
+  },
+  'animate-flip-up': {
+    name: 'animate-flip-up',
+    kind: 'animation',
+    file: 'src/styles/animations.css',
+    summary:
+      "Split-flap bottom half: after a 0.25s delay, swings from 90° up to flat on its top edge (pair with `origin-top`) so the new digit's bottom drops in.",
+    css: `@theme {
+  --animate-flip-up: flip-up 0.25s ease-out 0.25s both;
+  @keyframes flip-up {
+    from { transform: rotateX(90deg); }
+    to   { transform: rotateX(0deg); }
+  }
+}`,
+  },
   'font-orbitron': {
     name: 'font-orbitron',
     kind: 'font',

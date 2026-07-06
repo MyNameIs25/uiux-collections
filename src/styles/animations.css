@@ -17,4 +17,26 @@
       background-position: 35% 60%;
     }
   }
+
+  /* Split-flap flip: the old top half falls back off its bottom edge
+     (animate-flip-down), then the new bottom half swings up on its top edge
+     0.25s later (animate-flip-up). Pair with `origin-bottom` / `origin-top`. */
+  --animate-flip-down: flip-down 0.25s ease-in forwards;
+  @keyframes flip-down {
+    from {
+      transform: rotateX(0deg);
+    }
+    to {
+      transform: rotateX(-90deg);
+    }
+  }
+  --animate-flip-up: flip-up 0.25s ease-out 0.25s both;
+  @keyframes flip-up {
+    from {
+      transform: rotateX(90deg);
+    }
+    to {
+      transform: rotateX(0deg);
+    }
+  }
 }
