@@ -44,7 +44,7 @@ export function ComponentGallery() {
             onClick={() => setComponent(id)}
             aria-label={`View details for ${name}`}
             title="View details"
-            className="absolute top-3 right-3 z-10 size-8 -translate-y-1 scale-95 opacity-0 shadow-sm transition-all duration-300 ease-out group-hover:translate-y-0 group-hover:scale-100 group-hover:opacity-100 focus-visible:translate-y-0 focus-visible:scale-100 focus-visible:opacity-100"
+            className="absolute top-3 right-3 z-10 size-8 -translate-y-1 text-muted-foreground opacity-0 shadow-sm transition-all duration-300 ease-out group-hover:translate-y-0 group-hover:opacity-100 hover:scale-110 hover:text-foreground focus-visible:translate-y-0 focus-visible:scale-110 focus-visible:text-foreground focus-visible:opacity-100"
           >
             <Maximize2 className="size-4" />
           </Button>
