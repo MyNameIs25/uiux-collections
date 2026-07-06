@@ -1,4 +1,5 @@
-import { SearchX } from 'lucide-react'
+import { Maximize2, SearchX } from 'lucide-react'
+import { Button } from '@/components/base/button'
 import { useCatalogParams } from '@/hooks/use-catalog-params'
 import { useUrlParam } from '@/hooks/use-url-param'
 import { CATEGORIES, filterShowcases } from '@/registry'
@@ -34,23 +35,21 @@ export function ComponentGallery() {
       {results.map(({ id, name, description, category: cat, Component }) => (
         <article
           key={id}
-          role="button"
-          tabIndex={0}
-          onClick={() => setComponent(id)}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter' || e.key === ' ') {
-              e.preventDefault()
-              setComponent(id)
-            }
-          }}
-          aria-label={`View details for ${name}`}
-          className="group flex cursor-pointer flex-col overflow-hidden rounded-xl border bg-card text-card-foreground shadow-sm transition-colors hover:border-ring/60 focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
+          className="group relative flex flex-col overflow-hidden rounded-xl border bg-card text-card-foreground shadow-sm transition-colors hover:border-ring/60"
         >
+          {/* Top-right button opens the details page; the preview stays interactive. */}
+          <Button
+            variant="secondary"
+            size="icon"
+            onClick={() => setComponent(id)}
+            aria-label={`View details for ${name}`}
+            title="View details"
+            className="absolute top-3 right-3 z-10 size-8 opacity-70 shadow-sm transition-opacity group-hover:opacity-100 focus-visible:opacity-100"
+          >
+            <Maximize2 className="size-4" />
+          </Button>
           <div className="flex min-h-40 flex-1 items-center justify-center bg-muted/40 p-6">
-            {/* Preview is display-only in the grid; it's interactive on the details page. */}
-            <div className="pointer-events-none select-none">
-              <Component />
-            </div>
+            <Component />
           </div>
           <div className="border-t p-4">
             <div className="flex items-center justify-between gap-2">

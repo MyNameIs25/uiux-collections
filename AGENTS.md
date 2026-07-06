@@ -72,7 +72,7 @@ To add a **new library**, append an entry to `LIBRARIES` in `src/registry/librar
 
 ## Navigation & the details page
 
-- No router: the open component is stored in the URL as `?component=<id>`. Clicking a gallery card sets it; the header **Back** button (and picking a category/tag/search) clears it. `App.tsx` reads it via `useUrlParam` and renders `ComponentDetails` when set, otherwise `TagFilterBar` + `ComponentGallery`.
+- No router: the open component is stored in the URL as `?component=<id>`. The card body stays interactive (hover/animations run live); a top-right shadcn icon button on each card sets it. The header **Back** button (and picking a category/tag/search) clears it. `App.tsx` reads it via `useUrlParam` and renders `ComponentDetails` when set, otherwise `TagFilterBar` + `ComponentGallery`.
 - The details page (`component-details.tsx`) shows: live preview, `libraries` badges, full description + clickable tags, and a shadcn `Tabs` **Code / Agent prompt** block, each copyable via `CopyButton` (`copy-button.tsx`).
 
 ## Filtering (category + tags + search)
@@ -103,7 +103,7 @@ src/
     app-sidebar.tsx          # category sidebar (shadcn)
     tag-filter-bar.tsx       # collapsible tag chips under the header
     tag-pill.tsx             # clickable tag chip (no #), optional count
-    component-gallery.tsx    # filtered grid of showcases (clickable cards)
+    component-gallery.tsx    # grid of live previews; top-right icon button opens details
     component-details.tsx    # details page: preview, libraries, metadata, code/prompt
     copy-button.tsx          # clipboard copy button with feedback
     base/                    # shadcn/ui primitives (generated)
