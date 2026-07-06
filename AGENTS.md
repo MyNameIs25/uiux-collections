@@ -72,8 +72,18 @@ To add a **new library**, append an entry to `LIBRARIES` in `src/registry/librar
 
 ## Navigation & the details page
 
-- No router: the open component is stored in the URL as `?component=<id>`. Clicking a gallery card sets it; the header **Back** button (and picking a category/search) clears it. `App.tsx` reads it via `useUrlParam` and renders `ComponentDetails` when set, otherwise `ComponentGallery`.
-- The details page (`component-details.tsx`) shows: live preview, `libraries` badges, full description + tags, and a shadcn `Tabs` **Code / Agent prompt** block, each copyable via `CopyButton` (`copy-button.tsx`).
+- No router: the open component is stored in the URL as `?component=<id>`. Clicking a gallery card sets it; the header **Back** button (and picking a category/tag/search) clears it. `App.tsx` reads it via `useUrlParam` and renders `ComponentDetails` when set, otherwise `TagFilterBar` + `ComponentGallery`.
+- The details page (`component-details.tsx`) shows: live preview, `libraries` badges, full description + clickable tags, and a shadcn `Tabs` **Code / Agent prompt** block, each copyable via `CopyButton` (`copy-button.tsx`).
+
+## Filtering (category + tags + search)
+
+All filter state lives in the URL via `useCatalogParams()` and combines as **category AND tags AND text**:
+
+- `?category=<id>` — single category (sidebar).
+- `?tags=a,b` — multiple tags, **union** (a component matches if it has *any* selected tag).
+- `?q=<text>` — free-text over name/description/tags.
+
+Tags are rendered as clickable chips (`TagPill`, no leading `#`) in two places: the `TagFilterBar` under the header (scoped to the current category, with per-tag counts, collapsing past 12 behind a `…` expander) and the details page. Clicking a tag toggles it in `?tags=`. Switching category clears tags (they're category-scoped). `getTagCounts(category)` and `filterShowcases(category, query, tags)` live in `registry.ts`.
 
 ## Structure
 
@@ -91,6 +101,8 @@ src/
     theme-provider.tsx       # dark/light context
     mode-toggle.tsx          # global dark-mode toggle button
     app-sidebar.tsx          # category sidebar (shadcn)
+    tag-filter-bar.tsx       # collapsible tag chips under the header
+    tag-pill.tsx             # clickable tag chip (no #), optional count
     component-gallery.tsx    # filtered grid of showcases (clickable cards)
     component-details.tsx    # details page: preview, libraries, metadata, code/prompt
     copy-button.tsx          # clipboard copy button with feedback

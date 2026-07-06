@@ -2,6 +2,7 @@ import { ArrowLeft } from 'lucide-react'
 import { AppSidebar } from '@/components/app-sidebar'
 import { ComponentDetails } from '@/components/component-details'
 import { ComponentGallery } from '@/components/component-gallery'
+import { TagFilterBar } from '@/components/tag-filter-bar'
 import { ModeToggle } from '@/components/mode-toggle'
 import { Button } from '@/components/base/button'
 import {
@@ -56,11 +57,14 @@ function App() {
             <ModeToggle />
           </div>
         </header>
-        <main className="flex flex-1 flex-col p-6">
+        <main className="flex flex-1 flex-col gap-5 p-6">
           {selected ? (
             <ComponentDetails showcase={selected} />
           ) : (
-            <ComponentGallery />
+            <>
+              <TagFilterBar />
+              <ComponentGallery />
+            </>
           )}
         </main>
       </SidebarInset>

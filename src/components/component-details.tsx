@@ -1,6 +1,8 @@
 import { CopyButton } from '@/components/copy-button'
+import { TagPill } from '@/components/tag-pill'
 import { Badge } from '@/components/base/badge'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/base/tabs'
+import { useCatalogParams } from '@/hooks/use-catalog-params'
 import {
   buildPrompt,
   CATEGORIES,
@@ -26,6 +28,7 @@ function CodePane({ value, copyLabel }: { value: string; copyLabel: string }) {
 
 export function ComponentDetails({ showcase }: { showcase: Showcase }) {
   const { name, description, category, tags, libraries, Component, code } = showcase
+  const { toggleTag } = useCatalogParams()
   const prompt = buildPrompt(showcase)
 
   return (
@@ -68,9 +71,7 @@ export function ComponentDetails({ showcase }: { showcase: Showcase }) {
           <div className="flex flex-wrap gap-2">
             {tags?.length ? (
               tags.map((tag) => (
-                <Badge key={tag} variant="secondary">
-                  #{tag}
-                </Badge>
+                <TagPill key={tag} tag={tag} onClick={() => toggleTag(tag)} />
               ))
             ) : (
               <span className="text-sm text-muted-foreground">—</span>

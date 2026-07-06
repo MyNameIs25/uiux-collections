@@ -7,9 +7,9 @@ const categoryLabel = (id: string) =>
   CATEGORIES.find((c) => c.id === id)?.label ?? id
 
 export function ComponentGallery() {
-  const { category, query } = useCatalogParams()
+  const { category, query, tags } = useCatalogParams()
   const [, setComponent] = useUrlParam('component', '')
-  const results = filterShowcases(category, query)
+  const results = filterShowcases(category, query, tags)
 
   if (results.length === 0) {
     return (
@@ -20,7 +20,9 @@ export function ComponentGallery() {
           <p className="text-sm text-muted-foreground">
             {query
               ? `Nothing matches “${query}”.`
-              : 'Register one in src/registry/registry.ts to see it appear.'}
+              : tags.length
+                ? 'No components match the selected tags.'
+                : 'Register one in src/registry/registry.ts to see it appear.'}
           </p>
         </div>
       </div>
