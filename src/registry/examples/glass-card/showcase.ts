@@ -7,7 +7,7 @@ export default defineShowcase({
   category: 'cards',
   description: 'A frosted-glass card with a blurred gradient accent.',
   libraries: ['react', 'tailwind'],
-  tags: ['glass', 'blur', 'glassmorphism'],
+  tags: ['glass', 'blur'],
   Component: GlassCard,
   // Key idea: semi-transparent bg + backdrop-blur, plus a blurred gradient blob
   // behind the content for the glow.

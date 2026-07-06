@@ -64,7 +64,7 @@ is **drop a folder** — no edits to `registry.ts` (it auto-discovers via
    - **`showcase.ts`** — `export default defineShowcase({...})` with the metadata:
      - `id`, `name`, `category` (a valid `CategoryId`) — required; `id` is usually the folder name.
      - `Component` — import it from `./demo`.
-     - `description`, `tags` — shown on the card/details page; feed search.
+     - `description`, `tags` — shown on the card/details page; feed search. **Tag using the controlled vocabulary in [docs/TAGS-GUIDELINE.md](docs/TAGS-GUIDELINE.md)** (style / motion / trigger / capability groups + naming rules) — don't invent synonyms.
      - `libraries` — array of `LibraryId` (`src/registry/libraries.ts`, e.g. `['react', 'tailwind', 'gsap']`); rendered as badges.
      - `principle` — optional hand-written **key snippet** (the essence); shown in the **Principle** tab.
      - `prompt` — optional; if omitted, one is auto-composed from the metadata + `principle` (falling back to `source`) via `buildPrompt` in `prompt.ts`, shown in the **Agent prompt** tab.
@@ -88,6 +88,8 @@ All filter state lives in the URL via `useCatalogParams()` and combines as **cat
 - `?q=<text>` — free-text over name/description/tags.
 
 Tags are rendered as clickable chips (`TagPill`, no leading `#`) in two places: the `TagFilterBar` under the header (scoped to the current category, with per-tag counts, collapsing past 12 behind a `…` expander) and the details page. Clicking a tag toggles it in `?tags=`. Switching category clears tags (they're category-scoped). `getTagCounts(category)` and `filterShowcases(category, query, tags)` live in `registry.ts`.
+
+Tag values follow the controlled vocabulary in [docs/TAGS-GUIDELINE.md](docs/TAGS-GUIDELINE.md) — keep new tags consistent with it so search/filter stays reliable.
 
 ## Structure
 
