@@ -1,15 +1,24 @@
+import { ArrowLeft } from 'lucide-react'
 import { AppSidebar } from '@/components/app-sidebar'
+import { ComponentDetails } from '@/components/component-details'
 import { ComponentGallery } from '@/components/component-gallery'
 import { ModeToggle } from '@/components/mode-toggle'
+import { Button } from '@/components/base/button'
 import {
   SidebarInset,
   SidebarProvider,
   SidebarTrigger,
 } from '@/components/base/sidebar'
 import { useCatalogParams } from '@/hooks/use-catalog-params'
-import { ALL_CATEGORY, ALL_CATEGORY_META, CATEGORIES } from '@/registry'
+import { useUrlParam } from '@/hooks/use-url-param'
+import {
+  ALL_CATEGORY,
+  ALL_CATEGORY_META,
+  CATEGORIES,
+  getShowcase,
+} from '@/registry'
 
-function ActiveTitle() {
+function GalleryTitle() {
   const { category } = useCatalogParams()
   const label =
     category === ALL_CATEGORY
@@ -19,19 +28,40 @@ function ActiveTitle() {
 }
 
 function App() {
+  const [componentId, setComponent] = useUrlParam('component', '')
+  const selected = componentId ? getShowcase(componentId) : undefined
+
   return (
     <SidebarProvider>
       <AppSidebar />
       <SidebarInset>
         <header className="sticky top-0 z-10 flex h-14 items-center gap-3 border-b bg-background/80 px-4 backdrop-blur">
-          <SidebarTrigger />
-          <ActiveTitle />
+          {selected ? (
+            <Button
+              variant="ghost"
+              size="sm"
+              className="gap-1.5"
+              onClick={() => setComponent('')}
+            >
+              <ArrowLeft className="size-4" />
+              Back
+            </Button>
+          ) : (
+            <>
+              <SidebarTrigger />
+              <GalleryTitle />
+            </>
+          )}
           <div className="ml-auto">
             <ModeToggle />
           </div>
         </header>
         <main className="flex flex-1 flex-col p-6">
-          <ComponentGallery />
+          {selected ? (
+            <ComponentDetails showcase={selected} />
+          ) : (
+            <ComponentGallery />
+          )}
         </main>
       </SidebarInset>
     </SidebarProvider>

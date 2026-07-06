@@ -24,6 +24,11 @@ export const countsByCategory: Record<CategoryId, number> = registry.reduce(
   {} as Record<CategoryId, number>,
 )
 
+/** Look up a single showcase by its id. */
+export function getShowcase(id: string): Showcase | undefined {
+  return registry.find((s) => s.id === id)
+}
+
 /** Filter the registry by category and a free-text query (name/tags/description). */
 export function filterShowcases(
   category: CategoryId | 'all',

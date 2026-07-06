@@ -1,3 +1,5 @@
 export * from './categories'
+export * from './libraries'
 export * from './types'
+export * from './prompt'
 export * from './registry'

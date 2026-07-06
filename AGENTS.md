@@ -57,11 +57,23 @@ pnpm lint      # run oxlint
 
 Categories and the component catalog live in `src/registry/`:
 
-1. **Create the showcase** anywhere (convention: `src/registry/examples/<name>.tsx`), export a `defineShowcase({...})` with `id`, `name`, `category` (must be a valid `CategoryId`), optional `description`/`tags`, and `Component`.
+1. **Create the showcase** anywhere (convention: `src/registry/examples/<name>.tsx`), export a `defineShowcase({...})` with:
+   - `id`, `name`, `category` (a valid `CategoryId`) — required.
+   - `Component` — the live preview (interactive on the details page, display-only in the grid).
+   - `description`, `tags` — shown on the card and details page; feed search.
+   - `libraries` — array of `LibraryId` (`src/registry/libraries.ts`, e.g. `['react', 'tailwind', 'gsap']`); rendered as badges on the details page.
+   - `code` — the key implementation as a string; shown in the copyable **Code** tab.
+   - `prompt` — optional; if omitted, an agent prompt is auto-composed from the metadata + `code` (see `buildPrompt` in `prompt.ts`) for the **Agent prompt** tab.
 2. **Register it**: import it into `src/registry/registry.ts` and add it to the `registry` array.
-3. Sidebar counts, filtering, and search update automatically.
+3. Sidebar counts, gallery filtering/search, and the details page all update automatically.
 
 To add a **new category**, append an entry to `CATEGORIES` in `src/registry/categories.ts` (id + label + lucide icon). Current categories: buttons, cards, modals, hero, navigation, forms, feedback, data-display, animation, backgrounds, text, 3d.
+To add a **new library**, append an entry to `LIBRARIES` in `src/registry/libraries.ts`.
+
+## Navigation & the details page
+
+- No router: the open component is stored in the URL as `?component=<id>`. Clicking a gallery card sets it; the header **Back** button (and picking a category/search) clears it. `App.tsx` reads it via `useUrlParam` and renders `ComponentDetails` when set, otherwise `ComponentGallery`.
+- The details page (`component-details.tsx`) shows: live preview, `libraries` badges, full description + tags, and a shadcn `Tabs` **Code / Agent prompt** block, each copyable via `CopyButton` (`copy-button.tsx`).
 
 ## Structure
 
@@ -79,12 +91,16 @@ src/
     theme-provider.tsx       # dark/light context
     mode-toggle.tsx          # global dark-mode toggle button
     app-sidebar.tsx          # category sidebar (shadcn)
-    component-gallery.tsx     # filtered grid of showcases
+    component-gallery.tsx    # filtered grid of showcases (clickable cards)
+    component-details.tsx    # details page: preview, libraries, metadata, code/prompt
+    copy-button.tsx          # clipboard copy button with feedback
     base/                    # shadcn/ui primitives (generated)
   registry/
     categories.ts            # category catalog (single source of truth)
+    libraries.ts             # library catalog (LibraryId + labels)
     types.ts                 # Showcase type + defineShowcase() helper
-    registry.ts              # the component list + filtering/counts
+    prompt.ts                # buildPrompt(): metadata + code -> agent prompt
+    registry.ts              # the component list + filtering/counts/lookup
     index.ts                 # re-exports
     examples/                # seeded example showcases (safe to delete)
 components.json              # shadcn/ui config (ui alias → components/base)

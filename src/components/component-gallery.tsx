@@ -1,5 +1,6 @@
 import { SearchX } from 'lucide-react'
 import { useCatalogParams } from '@/hooks/use-catalog-params'
+import { useUrlParam } from '@/hooks/use-url-param'
 import { CATEGORIES, filterShowcases } from '@/registry'
 
 const categoryLabel = (id: string) =>
@@ -7,6 +8,7 @@ const categoryLabel = (id: string) =>
 
 export function ComponentGallery() {
   const { category, query } = useCatalogParams()
+  const [, setComponent] = useUrlParam('component', '')
   const results = filterShowcases(category, query)
 
   if (results.length === 0) {
@@ -30,21 +32,35 @@ export function ComponentGallery() {
       {results.map(({ id, name, description, category: cat, Component }) => (
         <article
           key={id}
-          className="flex flex-col overflow-hidden rounded-xl border bg-card text-card-foreground shadow-sm"
+          role="button"
+          tabIndex={0}
+          onClick={() => setComponent(id)}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault()
+              setComponent(id)
+            }
+          }}
+          aria-label={`View details for ${name}`}
+          className="group flex cursor-pointer flex-col overflow-hidden rounded-xl border bg-card text-card-foreground shadow-sm transition-colors hover:border-ring/60 focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
         >
           <div className="flex min-h-40 flex-1 items-center justify-center bg-muted/40 p-6">
-            <Component />
+            {/* Preview is display-only in the grid; it's interactive on the details page. */}
+            <div className="pointer-events-none select-none">
+              <Component />
+            </div>
           </div>
           <div className="border-t p-4">
             <div className="flex items-center justify-between gap-2">
               <h3 className="font-medium">{name}</h3>
-              <span className="rounded-full bg-secondary px-2 py-0.5 text-xs text-secondary-foreground">
+              <span className="shrink-0 rounded-full bg-secondary px-2 py-0.5 text-xs text-secondary-foreground">
                 {categoryLabel(cat)}
               </span>
             </div>
-            {description && (
-              <p className="mt-1 text-sm text-muted-foreground">{description}</p>
-            )}
+            {/* Reserve two lines so every card's footer is the same height. */}
+            <p className="mt-1 line-clamp-2 min-h-10 text-sm text-muted-foreground">
+              {description}
+            </p>
           </div>
         </article>
       ))}

@@ -13,6 +13,14 @@ export const gradientText = defineShowcase({
   name: 'Gradient Text',
   category: 'text',
   description: 'Headline text filled with a clipped gradient.',
+  libraries: ['react', 'tailwind'],
   tags: ['gradient', 'headline', 'typography'],
   Component: GradientText,
+  code: `function GradientText() {
+  return (
+    <span className="bg-gradient-to-r from-fuchsia-500 via-purple-500 to-indigo-500 bg-clip-text text-4xl font-bold tracking-tight text-transparent">
+      Make it pop
+    </span>
+  )
+}`,
 })
