@@ -32,15 +32,12 @@ export function buildPrompt(showcase: Showcase): string {
     `- Keep it self-contained and themeable (support light/dark via Tailwind tokens).`,
   )
 
-  const reference = showcase.principle ?? showcase.source
-  if (reference) {
-    lines.push(
-      ``,
-      `Reference implementation:`,
-      '```tsx',
-      reference.trim(),
-      '```',
-    )
+  // `principle` is already Markdown (prose + a fenced snippet), so include it
+  // as-is; only the raw `source` fallback needs wrapping in a code fence.
+  if (showcase.principle) {
+    lines.push(``, `Key idea & reference implementation:`, ``, showcase.principle.trim())
+  } else if (showcase.source) {
+    lines.push(``, `Reference implementation:`, '```tsx', showcase.source.trim(), '```')
   }
 
   return lines.join('\n')

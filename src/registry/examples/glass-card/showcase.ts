@@ -9,11 +9,12 @@ export default defineShowcase({
   libraries: ['react', 'tailwind'],
   tags: ['glass', 'blur'],
   Component: GlassCard,
-  // Key idea: semi-transparent bg + backdrop-blur, plus a blurred gradient blob
-  // behind the content for the glow.
-  principle: `<div className="rounded-2xl border border-white/20 bg-white/10 backdrop-blur-md">
-  {/* blurred gradient blob behind content = the glow */}
-  <div className="absolute -top-10 -right-10 h-32 w-32 rounded-full bg-gradient-to-br from-fuchsia-400/40 to-indigo-400/40 blur-2xl" />
-  {/* ...content... */}
-</div>`,
+  principle: `Frosted glass is a translucent surface (\`bg-white/10\`) plus \`backdrop-blur-md\`, which blurs whatever sits *behind* the element. The translucency is what makes the blur visible — an opaque background would hide it. The soft glow is a separate blurred gradient blob (\`blur-2xl\`) placed behind the content.
+
+\`\`\`tsx
+<div className="rounded-2xl border border-white/20 bg-white/10 backdrop-blur-md">
+  {/* blurred blob behind the content = the glow */}
+  <div className="absolute -top-10 -right-10 size-32 rounded-full bg-gradient-to-br from-fuchsia-400/40 to-indigo-400/40 blur-2xl" />
+</div>
+\`\`\``,
 })

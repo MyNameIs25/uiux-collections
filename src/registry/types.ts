@@ -23,8 +23,18 @@ export interface Showcase {
   /** The component to render as a live preview. */
   Component: ComponentType
   /**
-   * Hand-written key snippet — the essence of the implementation. Optional;
-   * shown in the "Principle" tab and used to compose the agent prompt.
+   * How to render the live preview. `'fit'` scales the whole component down to
+   * fit the preview frame (like a website thumbnail) — use it for full-bleed
+   * showcases such as heroes and backgrounds that are designed for a full
+   * viewport. Omit for normal-sized components, which render at native size.
+   */
+  preview?: 'fit'
+  /**
+   * Hand-written "aha" of the effect: a short prose explanation followed by a
+   * fenced key snippet (Markdown). Optional; shown in the "Principle" tab and
+   * folded into the agent prompt. Follow docs/PRINCIPLE-GUIDELINE.md
+   * (explanation ≤ 80 words, snippet ≤ ~20 lines, name the load-bearing
+   * classes/APIs and say *why*).
    */
   principle?: string
   /**

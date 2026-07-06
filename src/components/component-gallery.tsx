@@ -1,5 +1,6 @@
 import { Maximize2, SearchX } from 'lucide-react'
 import { Button } from '@/components/base/button'
+import { LivePreview } from '@/components/live-preview'
 import { useCatalogParams } from '@/hooks/use-catalog-params'
 import { useUrlParam } from '@/hooks/use-url-param'
 import { CATEGORIES, filterShowcases } from '@/registry'
@@ -32,7 +33,7 @@ export function ComponentGallery() {
 
   return (
     <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
-      {results.map(({ id, name, description, category: cat, Component }) => (
+      {results.map(({ id, name, description, category: cat, Component, preview }) => (
         <article
           key={id}
           className="group relative flex flex-col overflow-hidden rounded-xl border bg-card text-card-foreground shadow-sm transition-colors hover:border-ring/60"
@@ -48,9 +49,7 @@ export function ComponentGallery() {
           >
             <Maximize2 className="size-4" />
           </Button>
-          <div className="flex min-h-40 flex-1 items-center justify-center bg-muted/40 p-6">
-            <Component />
-          </div>
+          <LivePreview variant="card" fit={preview === 'fit'} Component={Component} />
           <div className="border-t p-4">
             <div className="flex items-center justify-between gap-2">
               <h3 className="font-medium">{name}</h3>

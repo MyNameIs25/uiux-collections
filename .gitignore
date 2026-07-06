@@ -25,3 +25,4 @@ dist-ssr
 
 # Playwright MCP test artifacts
 .playwright-mcp/
+.gitnexus

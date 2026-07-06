@@ -64,9 +64,10 @@ is **drop a folder** — no edits to `registry.ts` (it auto-discovers via
    - **`showcase.ts`** — `export default defineShowcase({...})` with the metadata:
      - `id`, `name`, `category` (a valid `CategoryId`) — required; `id` is usually the folder name.
      - `Component` — import it from `./demo`.
+     - `preview` — optional; set to `'fit'` for **full-bleed** showcases (heroes, full backgrounds) designed for a whole viewport. On gallery cards the live preview is cropped to a fixed-height window (its vertical middle shows); on the details page it's scaled to fit the width (capped so libraries/tags stay in view). Omit for normal-sized components (buttons, cards, text), which render at native size. Framing + the hover **Expand-to-fullscreen** button live in `LivePreview` (`src/components/live-preview.tsx`); width-scaling is `ScaledPreview` (`src/components/scaled-preview.tsx`).
      - `description`, `tags` — shown on the card/details page; feed search. **Tag using the controlled vocabulary in [docs/TAGS-GUIDELINE.md](docs/TAGS-GUIDELINE.md)** (style / motion / trigger / capability groups + naming rules) — don't invent synonyms.
      - `libraries` — array of `LibraryId` (`src/registry/libraries.ts`, e.g. `['react', 'tailwind', 'gsap']`); rendered as badges.
-     - `principle` — optional hand-written **key snippet** (the essence); shown in the **Principle** tab.
+     - `principle` — optional hand-written **"aha"** of the effect: a short prose explanation + a fenced key snippet (Markdown), shown in the **Principle** tab. **Follow [docs/PRINCIPLE-GUIDELINE.md](docs/PRINCIPLE-GUIDELINE.md)** (explanation ≤ 80 words, name the load-bearing classes/APIs and say *why*).
      - `prompt` — optional; if omitted, one is auto-composed from the metadata + `principle` (falling back to `source`) via `buildPrompt` in `prompt.ts`, shown in the **Agent prompt** tab.
    - Do **not** set `source` — the registry injects it from `demo.tsx?raw`.
 2. Sidebar counts, gallery filtering/search, and the details page (Principle / Source / Agent prompt tabs) all update automatically.
@@ -111,6 +112,8 @@ src/
     tag-pill.tsx             # clickable tag chip (no #), optional count
     component-gallery.tsx    # grid of live previews; top-right icon button opens details
     component-details.tsx    # details page: preview, libraries, metadata, principle/source/prompt
+    live-preview.tsx         # preview frame: fit-crop / scale + hover Expand-to-fullscreen overlay
+    scaled-preview.tsx       # scales a full-bleed component to fit its frame (used by live-preview)
     copy-button.tsx          # clipboard copy button with feedback
     base/                    # shadcn/ui primitives (generated)
   registry/
