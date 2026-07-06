@@ -1,0 +1,144 @@
+- generic [ref=f25e3]:
+  - generic [ref=f25e6]:
+    - generic [ref=f25e7]:
+      - generic [ref=f25e8]:
+        - heading "UI/UX Collections" [level=1] [ref=f25e9]
+        - paragraph [ref=f25e10]: A gallery of components & effects
+      - generic [ref=f25e11]:
+        - img
+        - textbox "Search components" [ref=f25e12]:
+          - /placeholder: Search components…
+    - generic [ref=f25e14]:
+      - generic [ref=f25e15]: Categories
+      - list [ref=f25e17]:
+        - listitem [ref=f25e18]:
+          - button "All" [ref=f25e19]:
+            - img [ref=f25e20]
+            - generic [ref=f25e25]: All
+          - generic: "3"
+        - listitem [ref=f25e26]:
+          - button "Buttons" [ref=f25e27]:
+            - img [ref=f25e28]
+            - generic [ref=f25e34]: Buttons
+          - generic: "1"
+        - listitem [ref=f25e35]:
+          - button "Cards" [ref=f25e36]:
+            - img [ref=f25e37]
+            - generic [ref=f25e39]: Cards
+          - generic: "1"
+        - listitem [ref=f25e40]:
+          - button "Modals & Dialogs" [ref=f25e41]:
+            - img [ref=f25e42]
+            - generic [ref=f25e44]: Modals & Dialogs
+          - generic: "0"
+        - listitem [ref=f25e45]:
+          - button "Hero Sections" [ref=f25e46]:
+            - img [ref=f25e47]
+            - generic [ref=f25e50]: Hero Sections
+          - generic: "0"
+        - listitem [ref=f25e51]:
+          - button "Navigation" [ref=f25e52]:
+            - img [ref=f25e53]
+            - generic [ref=f25e54]: Navigation
+          - generic: "0"
+        - listitem [ref=f25e55]:
+          - button "Forms & Inputs" [ref=f25e56]:
+            - img [ref=f25e57]
+            - generic [ref=f25e62]: Forms & Inputs
+          - generic: "0"
+        - listitem [ref=f25e63]:
+          - button "Feedback" [ref=f25e64]:
+            - img [ref=f25e65]
+            - generic [ref=f25e70]: Feedback
+          - generic: "0"
+        - listitem [ref=f25e71]:
+          - button "Data Display" [ref=f25e72]:
+            - img [ref=f25e73]
+            - generic [ref=f25e75]: Data Display
+          - generic: "0"
+        - listitem [ref=f25e76]:
+          - button "Animations" [ref=f25e77]:
+            - img [ref=f25e78]
+            - generic [ref=f25e81]: Animations
+          - generic: "0"
+        - listitem [ref=f25e82]:
+          - button "Backgrounds" [ref=f25e83]:
+            - img [ref=f25e84]
+            - generic [ref=f25e88]: Backgrounds
+          - generic: "0"
+        - listitem [ref=f25e89]:
+          - button "Text Effects" [ref=f25e90]:
+            - img [ref=f25e91]
+            - generic [ref=f25e93]: Text Effects
+          - generic: "1"
+        - listitem [ref=f25e94]:
+          - button "3D / WebGL" [ref=f25e95]:
+            - img [ref=f25e96]
+            - generic [ref=f25e99]: 3D / WebGL
+          - generic: "0"
+    - button "Toggle Sidebar" [ref=f25e100]
+  - main [ref=f25e101]:
+    - generic [ref=f25e102]:
+      - button "Toggle Sidebar" [ref=f25e103]:
+        - img
+        - generic [ref=f25e104]: Toggle Sidebar
+      - heading "All" [level=2] [ref=f25e105]
+      - button "Toggle dark mode" [ref=f25e107]:
+        - img
+        - generic [ref=f25e108]: Toggle theme
+    - main [ref=f25e109]:
+      - generic [ref=f25e110]:
+        - button "gradient 2" [ref=f25e111]:
+          - generic [ref=f25e112]: gradient
+          - generic [ref=f25e113]: "2"
+        - button "blur 1" [ref=f25e114]:
+          - generic [ref=f25e115]: blur
+          - generic [ref=f25e116]: "1"
+        - button "cta 1" [ref=f25e117]:
+          - generic [ref=f25e118]: cta
+          - generic [ref=f25e119]: "1"
+        - button "glass 1" [ref=f25e120]:
+          - generic [ref=f25e121]: glass
+          - generic [ref=f25e122]: "1"
+        - button "glassmorphism 1" [ref=f25e123]:
+          - generic [ref=f25e124]: glassmorphism
+          - generic [ref=f25e125]: "1"
+        - button "headline 1" [ref=f25e126]:
+          - generic [ref=f25e127]: headline
+          - generic [ref=f25e128]: "1"
+        - button "pill 1" [ref=f25e129]:
+          - generic [ref=f25e130]: pill
+          - generic [ref=f25e131]: "1"
+        - button "typography 1" [ref=f25e132]:
+          - generic [ref=f25e133]: typography
+          - generic [ref=f25e134]: "1"
+      - generic [ref=f25e135]:
+        - article [ref=f25e136]:
+          - button "View details for Glass Card" [ref=f25e137]:
+            - img
+          - generic [ref=f25e139]:
+            - heading "Glassmorphism" [level=3] [ref=f25e140]
+            - paragraph [ref=f25e141]: A frosted-glass surface with a soft glow that reads on any background.
+          - generic [ref=f25e142]:
+            - generic [ref=f25e143]:
+              - heading "Glass Card" [level=3] [ref=f25e144]
+              - generic [ref=f25e145]: Cards
+            - paragraph [ref=f25e146]: A frosted-glass card with a blurred gradient accent.
+        - article [ref=f25e147]:
+          - button "View details for Gradient Button" [ref=f25e148]:
+            - img
+          - button "Get started" [ref=f25e150]
+          - generic [ref=f25e151]:
+            - generic [ref=f25e152]:
+              - heading "Gradient Button" [level=3] [ref=f25e153]
+              - generic [ref=f25e154]: Buttons
+            - paragraph [ref=f25e155]: A pill button with a gradient fill and a springy hover.
+        - article [ref=f25e156]:
+          - button "View details for Gradient Text" [ref=f25e157]:
+            - img
+          - generic [ref=f25e159]: Make it pop
+          - generic [ref=f25e160]:
+            - generic [ref=f25e161]:
+              - heading "Gradient Text" [level=3] [ref=f25e162]
+              - generic [ref=f25e163]: Text Effects
+            - paragraph [ref=f25e164]: Headline text filled with a clipped gradient.

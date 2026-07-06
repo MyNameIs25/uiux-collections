@@ -55,17 +55,21 @@ pnpm lint      # run oxlint
 
 ## Registry — adding a component
 
-Categories and the component catalog live in `src/registry/`:
+Categories and the component catalog live in `src/registry/`. Adding a component
+is **drop a folder** — no edits to `registry.ts` (it auto-discovers via
+`import.meta.glob`):
 
-1. **Create the showcase** anywhere (convention: `src/registry/examples/<name>.tsx`), export a `defineShowcase({...})` with:
-   - `id`, `name`, `category` (a valid `CategoryId`) — required.
-   - `Component` — the live preview (interactive on the details page, display-only in the grid).
-   - `description`, `tags` — shown on the card and details page; feed search.
-   - `libraries` — array of `LibraryId` (`src/registry/libraries.ts`, e.g. `['react', 'tailwind', 'gsap']`); rendered as badges on the details page.
-   - `code` — the key implementation as a string; shown in the copyable **Code** tab.
-   - `prompt` — optional; if omitted, an agent prompt is auto-composed from the metadata + `code` (see `buildPrompt` in `prompt.ts`) for the **Agent prompt** tab.
-2. **Register it**: import it into `src/registry/registry.ts` and add it to the `registry` array.
-3. Sidebar counts, gallery filtering/search, and the details page all update automatically.
+1. Create `src/registry/examples/<id>/` with two files:
+   - **`demo.tsx`** — the component itself, exported (e.g. `export function Foo() {...}`). This single file is both what renders live **and** what the details page shows as **Source** (imported verbatim via Vite `?raw`). Never write the code twice. Multi-file examples: put helpers alongside and import them.
+   - **`showcase.ts`** — `export default defineShowcase({...})` with the metadata:
+     - `id`, `name`, `category` (a valid `CategoryId`) — required; `id` is usually the folder name.
+     - `Component` — import it from `./demo`.
+     - `description`, `tags` — shown on the card/details page; feed search.
+     - `libraries` — array of `LibraryId` (`src/registry/libraries.ts`, e.g. `['react', 'tailwind', 'gsap']`); rendered as badges.
+     - `principle` — optional hand-written **key snippet** (the essence); shown in the **Principle** tab.
+     - `prompt` — optional; if omitted, one is auto-composed from the metadata + `principle` (falling back to `source`) via `buildPrompt` in `prompt.ts`, shown in the **Agent prompt** tab.
+   - Do **not** set `source` — the registry injects it from `demo.tsx?raw`.
+2. Sidebar counts, gallery filtering/search, and the details page (Principle / Source / Agent prompt tabs) all update automatically.
 
 To add a **new category**, append an entry to `CATEGORIES` in `src/registry/categories.ts` (id + label + lucide icon). Current categories: buttons, cards, modals, hero, navigation, forms, feedback, data-display, animation, backgrounds, text, 3d.
 To add a **new library**, append an entry to `LIBRARIES` in `src/registry/libraries.ts`.
@@ -104,16 +108,18 @@ src/
     tag-filter-bar.tsx       # collapsible tag chips under the header
     tag-pill.tsx             # clickable tag chip (no #), optional count
     component-gallery.tsx    # grid of live previews; top-right icon button opens details
-    component-details.tsx    # details page: preview, libraries, metadata, code/prompt
+    component-details.tsx    # details page: preview, libraries, metadata, principle/source/prompt
     copy-button.tsx          # clipboard copy button with feedback
     base/                    # shadcn/ui primitives (generated)
   registry/
     categories.ts            # category catalog (single source of truth)
     libraries.ts             # library catalog (LibraryId + labels)
     types.ts                 # Showcase type + defineShowcase() helper
-    prompt.ts                # buildPrompt(): metadata + code -> agent prompt
-    registry.ts              # the component list + filtering/counts/lookup
+    prompt.ts                # buildPrompt(): metadata + principle/source -> agent prompt
+    registry.ts              # glob auto-discovery + ?raw source, filtering/counts/lookup
     index.ts                 # re-exports
-    examples/                # seeded example showcases (safe to delete)
+    examples/<id>/           # one folder per showcase:
+      demo.tsx               #   the component (rendered live + shown as Source via ?raw)
+      showcase.ts            #   defineShowcase({ metadata, Component, principle? })
 components.json              # shadcn/ui config (ui alias → components/base)
 ```

@@ -32,12 +32,13 @@ export function buildPrompt(showcase: Showcase): string {
     `- Keep it self-contained and themeable (support light/dark via Tailwind tokens).`,
   )
 
-  if (showcase.code) {
+  const reference = showcase.principle ?? showcase.source
+  if (reference) {
     lines.push(
       ``,
       `Reference implementation:`,
       '```tsx',
-      showcase.code.trim(),
+      reference.trim(),
       '```',
     )
   }

@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react'
 import { CopyButton } from '@/components/copy-button'
 import { TagPill } from '@/components/tag-pill'
 import { Badge } from '@/components/base/badge'
@@ -27,9 +28,39 @@ function CodePane({ value, copyLabel }: { value: string; copyLabel: string }) {
 }
 
 export function ComponentDetails({ showcase }: { showcase: Showcase }) {
-  const { name, description, category, tags, libraries, Component, code } = showcase
+  const { name, description, category, tags, libraries, Component, principle, source } =
+    showcase
   const { toggleTag } = useCatalogParams()
   const prompt = buildPrompt(showcase)
+
+  // Build the tabs available for this showcase (principle is optional).
+  const codeTabs: { value: string; label: string; node: ReactNode }[] = []
+  if (principle) {
+    codeTabs.push({
+      value: 'principle',
+      label: 'Principle',
+      node: <CodePane value={principle} copyLabel="Copy snippet" />,
+    })
+  }
+  if (source) {
+    codeTabs.push({
+      value: 'source',
+      label: 'Source',
+      node: <CodePane value={source} copyLabel="Copy source" />,
+    })
+  }
+  codeTabs.push({
+    value: 'prompt',
+    label: 'Agent prompt',
+    node: (
+      <>
+        <p className="mb-2 text-sm text-muted-foreground">
+          Copy this and hand it to another agent to reproduce the effect.
+        </p>
+        <CodePane value={prompt} copyLabel="Copy prompt" />
+      </>
+    ),
+  })
 
   return (
     <div className="mx-auto flex w-full max-w-4xl flex-col gap-8">
@@ -80,29 +111,22 @@ export function ComponentDetails({ showcase }: { showcase: Showcase }) {
         </div>
       </section>
 
-      {/* 4. Copyable code / prompt */}
+      {/* 4. Copyable principle / source / prompt */}
       <section className="flex flex-col gap-2">
         <h2 className="text-sm font-medium text-muted-foreground">Implementation</h2>
-        <Tabs defaultValue="code">
+        <Tabs defaultValue={codeTabs[0].value}>
           <TabsList>
-            <TabsTrigger value="code">Code</TabsTrigger>
-            <TabsTrigger value="prompt">Agent prompt</TabsTrigger>
+            {codeTabs.map((t) => (
+              <TabsTrigger key={t.value} value={t.value}>
+                {t.label}
+              </TabsTrigger>
+            ))}
           </TabsList>
-          <TabsContent value="code">
-            {code ? (
-              <CodePane value={code} copyLabel="Copy code" />
-            ) : (
-              <p className="text-sm text-muted-foreground">
-                No code snippet provided for this component yet.
-              </p>
-            )}
-          </TabsContent>
-          <TabsContent value="prompt">
-            <p className="mb-2 text-sm text-muted-foreground">
-              Copy this and hand it to another agent to reproduce the effect.
-            </p>
-            <CodePane value={prompt} copyLabel="Copy prompt" />
-          </TabsContent>
+          {codeTabs.map((t) => (
+            <TabsContent key={t.value} value={t.value}>
+              {t.node}
+            </TabsContent>
+          ))}
         </Tabs>
       </section>
     </div>

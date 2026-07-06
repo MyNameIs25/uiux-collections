@@ -1,18 +1,34 @@
 import { ALL_CATEGORY, type CategoryFilter, type CategoryId } from './categories'
 import type { Showcase } from './types'
 
-// ── Register showcases here ──────────────────────────────────────────────────
-// To add a component: create it (e.g. under `examples/` or your own folder),
-// export a `defineShowcase({...})` from it, then import + list it below.
-import { gradientButton } from './examples/gradient-button'
-import { glassCard } from './examples/glass-card'
-import { gradientText } from './examples/gradient-text'
+// ── Auto-discovered showcases ────────────────────────────────────────────────
+// Adding a component = drop a folder under `examples/<id>/` with:
+//   demo.tsx      the component (rendered live AND shown as full source)
+//   showcase.ts   `export default defineShowcase({ ...metadata, Component })`
+// No edits here: the glob picks it up and attaches `source` from demo.tsx?raw.
+const showcaseModules = import.meta.glob<Showcase>('./examples/*/showcase.ts', {
+  eager: true,
+  import: 'default',
+})
+const demoSources = import.meta.glob<string>('./examples/*/demo.tsx', {
+  eager: true,
+  query: '?raw',
+  import: 'default',
+})
 
-export const registry: Showcase[] = [
-  gradientButton,
-  glassCard,
-  gradientText,
-]
+const folderOf = (path: string) => path.replace('./examples/', '').split('/')[0]
+
+const sourceByFolder = new Map<string, string>()
+for (const [path, src] of Object.entries(demoSources)) {
+  sourceByFolder.set(folderOf(path), src)
+}
+
+export const registry: Showcase[] = Object.entries(showcaseModules)
+  .map(([path, showcase]) => ({
+    ...showcase,
+    source: sourceByFolder.get(folderOf(path)),
+  }))
+  .sort((a, b) => a.name.localeCompare(b.name))
 // ─────────────────────────────────────────────────────────────────────────────
 
 /** Number of showcases per category id (for badges/counts in the sidebar). */

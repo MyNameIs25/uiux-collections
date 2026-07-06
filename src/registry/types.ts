@@ -3,11 +3,12 @@ import type { CategoryId } from './categories'
 import type { LibraryId } from './libraries'
 
 /**
- * A single showcase entry in the collection. Each collected UI/UX component
- * describes itself with one of these and registers it in `registry.ts`.
+ * A single showcase entry in the collection. Authored in
+ * `examples/<id>/showcase.ts` via `defineShowcase`; the registry auto-attaches
+ * `source` from the sibling `demo.tsx` (see `registry.ts`).
  */
 export interface Showcase {
-  /** Unique, url-safe slug (e.g. "magnetic-button"). */
+  /** Unique, url-safe slug (e.g. "magnetic-button"); usually the folder name. */
   id: string
   /** Human-readable name shown in the gallery. */
   name: string
@@ -21,27 +22,38 @@ export interface Showcase {
   tags?: string[]
   /** The component to render as a live preview. */
   Component: ComponentType
-  /** Key implementation code, shown in the copyable code block on the details page. */
-  code?: string
+  /**
+   * Hand-written key snippet — the essence of the implementation. Optional;
+   * shown in the "Principle" tab and used to compose the agent prompt.
+   */
+  principle?: string
+  /**
+   * Full source of the example's `demo.tsx`, auto-attached by the registry
+   * from a Vite `?raw` import. Authors do NOT set this.
+   */
+  source?: string
   /**
    * Optional hand-written agent prompt. When omitted, one is generated from the
-   * metadata + `code` so it can be copied and handed to another agent.
+   * metadata + `principle` (falling back to `source`).
    */
   prompt?: string
 }
 
 /**
- * Identity helper that gives you type-checking + autocomplete when authoring a
- * showcase next to its component:
+ * Identity helper for authoring a showcase with type-checking + autocomplete:
  *
- * ```tsx
- * export const magneticButton = defineShowcase({
+ * ```ts
+ * // examples/magnetic-button/showcase.ts
+ * import { defineShowcase } from '../../types'
+ * import { MagneticButton } from './demo'
+ *
+ * export default defineShowcase({
  *   id: 'magnetic-button',
  *   name: 'Magnetic Button',
  *   category: 'buttons',
- *   libraries: ['tailwind', 'gsap'],
+ *   libraries: ['react', 'tailwind', 'gsap'],
  *   Component: MagneticButton,
- *   code: `...`,
+ *   principle: `// the key bit...`,
  * })
  * ```
  */
