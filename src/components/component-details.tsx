@@ -3,11 +3,17 @@ import { CopyButton } from '@/components/copy-button'
 import { LivePreview } from '@/components/live-preview'
 import { TagPill } from '@/components/tag-pill'
 import { Badge } from '@/components/base/badge'
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from '@/components/base/hover-card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/base/tabs'
 import { useCatalogParams } from '@/hooks/use-catalog-params'
 import {
   buildPrompt,
   CATEGORIES,
+  getUtility,
   libraryLabel,
   type Showcase,
 } from '@/registry'
@@ -25,6 +31,46 @@ function CodePane({ value, copyLabel }: { value: string; copyLabel: string }) {
         <code className="font-mono">{value}</code>
       </pre>
     </div>
+  )
+}
+
+// A prebuilt-utility chip; hovering reveals what the utility expands to.
+function UtilityChip({ name }: { name: string }) {
+  const util = getUtility(name)
+  if (!util) {
+    // Unknown utility — still show it, but without an explanation.
+    return (
+      <Badge variant="outline" className="font-mono font-normal">
+        {name}
+      </Badge>
+    )
+  }
+  return (
+    <HoverCard openDelay={80} closeDelay={80}>
+      <HoverCardTrigger asChild>
+        <Badge
+          variant="secondary"
+          className="cursor-help font-mono font-normal hover:bg-secondary/70"
+        >
+          {util.name}
+        </Badge>
+      </HoverCardTrigger>
+      <HoverCardContent align="start" className="w-[28rem] max-w-[90vw]">
+        <div className="flex items-center justify-between gap-2">
+          <span className="font-mono text-sm font-medium">{util.name}</span>
+          <Badge variant="outline" className="text-[0.7rem] font-normal">
+            {util.kind}
+          </Badge>
+        </div>
+        <p className="mt-1.5 text-sm text-muted-foreground">{util.summary}</p>
+        <pre className="mt-2 max-h-72 overflow-auto rounded-md border bg-muted/50 p-3 text-xs">
+          <code className="font-mono">{util.css}</code>
+        </pre>
+        <p className="mt-2 font-mono text-[0.7rem] text-muted-foreground">
+          {util.file}
+        </p>
+      </HoverCardContent>
+    </HoverCard>
   )
 }
 
@@ -114,6 +160,7 @@ export function ComponentDetails({ showcase }: { showcase: Showcase }) {
     category,
     tags,
     libraries,
+    utilities,
     Component,
     principle,
     source,
@@ -201,6 +248,23 @@ export function ComponentDetails({ showcase }: { showcase: Showcase }) {
           </div>
         </div>
       </section>
+
+      {/* Prebuilt Tailwind utilities used (hover to see what each expands to) */}
+      {utilities?.length ? (
+        <section className="flex flex-col gap-2">
+          <h2 className="text-sm font-medium text-muted-foreground">Utilities</h2>
+          <p className="text-sm text-muted-foreground">
+            Custom Tailwind utilities from{' '}
+            <code className="font-mono text-xs">src/styles/</code> — hover a chip
+            to see what it expands to.
+          </p>
+          <div className="flex flex-wrap gap-2">
+            {utilities.map((u) => (
+              <UtilityChip key={u} name={u} />
+            ))}
+          </div>
+        </section>
+      ) : null}
 
       {/* 4. Copyable principle / source / prompt */}
       <section className="flex flex-col gap-2">

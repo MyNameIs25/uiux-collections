@@ -20,6 +20,13 @@ export interface Showcase {
   libraries?: LibraryId[]
   /** Free-form tags to improve search. */
   tags?: string[]
+  /**
+   * Names of custom Tailwind utilities / theme tokens this showcase relies on
+   * (from `src/styles/`, catalogued in `utilities.ts`, e.g. `'liquid-glass'`).
+   * Rendered in the details page's "Utilities" section, each hover-explaining
+   * what it expands to. Omit if the showcase only uses stock Tailwind.
+   */
+  utilities?: string[]
   /** The component to render as a live preview. */
   Component: ComponentType
   /**

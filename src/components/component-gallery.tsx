@@ -1,4 +1,4 @@
-import { Maximize2, SearchX } from 'lucide-react'
+import { ArrowRight, SearchX } from 'lucide-react'
 import { Button } from '@/components/base/button'
 import { LivePreview } from '@/components/live-preview'
 import { useCatalogParams } from '@/hooks/use-catalog-params'
@@ -38,16 +38,17 @@ export function ComponentGallery() {
           key={id}
           className="group relative flex flex-col overflow-hidden rounded-xl border bg-card text-card-foreground shadow-sm transition-colors hover:border-ring/60"
         >
-          {/* Top-right button opens the details page; the preview stays interactive. */}
+          {/* Top-right arrow opens the details page; the preview stays interactive.
+              Visible by default on touch; hover-revealed on mouse devices. */}
           <Button
             variant="secondary"
             size="icon"
             onClick={() => setComponent(id)}
             aria-label={`View details for ${name}`}
             title="View details"
-            className="absolute top-3 right-3 z-10 size-8 -translate-y-1 text-muted-foreground opacity-0 shadow-sm transition-all duration-300 ease-out group-hover:translate-y-0 group-hover:opacity-100 hover:scale-110 hover:text-foreground focus-visible:translate-y-0 focus-visible:scale-110 focus-visible:text-foreground focus-visible:opacity-100"
+            className="absolute top-3 right-3 z-10 size-8 text-muted-foreground shadow-sm transition-all duration-300 ease-out hover:scale-110 hover:text-foreground focus-visible:translate-y-0 focus-visible:scale-110 focus-visible:text-foreground focus-visible:opacity-100 can-hover:-translate-y-1 can-hover:opacity-0 can-hover:group-hover:translate-y-0 can-hover:group-hover:opacity-100"
           >
-            <Maximize2 className="size-4" />
+            <ArrowRight className="size-4" />
           </Button>
           <LivePreview variant="card" fit={preview === 'fit'} Component={Component} />
           <div className="border-t p-4">

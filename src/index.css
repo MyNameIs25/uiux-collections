@@ -1,7 +1,16 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
 
+/* App-specific styles, grouped by kind (see src/styles/). */
+@import './styles/theme.css';
+@import './styles/animations.css';
+@import './styles/utilities.css';
+
 @custom-variant dark (&:is(.dark *));
+
+/* Hover-capable (mouse) devices only — touch devices get the default state.
+   Use for hover-reveal affordances so they stay visible on mobile/tablet. */
+@custom-variant can-hover (@media (hover: hover));
 
 :root {
   --radius: 0.625rem;

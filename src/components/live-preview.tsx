@@ -76,8 +76,8 @@ export function LivePreview({
   // Reveal on hover of the card (article `group`) or the details stage itself.
   const reveal =
     variant === 'card'
-      ? 'opacity-0 group-hover:translate-y-0 group-hover:opacity-100'
-      : 'opacity-0 group-hover/stage:translate-y-0 group-hover/stage:opacity-100'
+      ? 'can-hover:-translate-y-1 can-hover:opacity-0 can-hover:group-hover:translate-y-0 can-hover:group-hover:opacity-100'
+      : 'can-hover:-translate-y-1 can-hover:opacity-0 can-hover:group-hover/stage:translate-y-0 can-hover:group-hover/stage:opacity-100'
 
   return (
     <div className={cn('group/stage relative', stageClass)}>
@@ -89,7 +89,7 @@ export function LivePreview({
         aria-label="Expand to fullscreen"
         title="Fullscreen"
         className={cn(
-          'absolute top-3 z-10 size-8 -translate-y-1 text-muted-foreground shadow-sm transition-all duration-300 ease-out hover:scale-110 hover:text-foreground focus-visible:translate-y-0 focus-visible:scale-110 focus-visible:text-foreground focus-visible:opacity-100',
+          'absolute top-3 z-10 size-8 text-muted-foreground shadow-sm transition-all duration-300 ease-out hover:scale-110 hover:text-foreground focus-visible:translate-y-0 focus-visible:scale-110 focus-visible:text-foreground focus-visible:opacity-100',
           variant === 'card' ? 'left-3' : 'right-3',
           reveal,
         )}

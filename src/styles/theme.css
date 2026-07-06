@@ -1,0 +1,11 @@
+/* Custom design tokens, exposed as Tailwind theme values.
+   `--font-*` -> `font-*`, `--ease-*` -> `ease-*`, etc. */
+@theme {
+  /* Display font for the liquid-glass button (font-orbitron).
+     The web font itself is loaded via a <link> in index.html — a build-time
+     CSS @import of an external font does not survive Vite's bundling. */
+  --font-orbitron: 'Orbitron', system-ui, sans-serif;
+
+  /* Springy easing with a slight overshoot (ease-spring). */
+  --ease-spring: cubic-bezier(0.175, 0.885, 0.32, 2.2);
+}

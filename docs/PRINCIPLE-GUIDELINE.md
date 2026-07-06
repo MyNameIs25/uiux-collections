@@ -62,6 +62,13 @@ belongs in Source, not Principle.
 5. **Strip the snippet to essence.** Remove colors, padding, copy, and wrappers
    that aren't part of the trick. Keep only lines that are load-bearing. Annotate
    at most 1–2 lines with a short `//` comment.
+6. **Call out prebuilt utilities.** If the effect leans on a custom Tailwind
+   utility (a `@utility` / theme token from `src/styles/`, e.g. `liquid-glass`),
+   name it *and* explain what it does in one clause — a reader shouldn't have to
+   open the CSS to understand the mechanism (e.g. "the `liquid-glass` utility =
+   a translucent gradient + an SVG-displacement `backdrop-filter`"). Also list it
+   in the showcase's `utilities` field so it shows up in the details page's
+   **Utilities** section.
 
 ### Style
 

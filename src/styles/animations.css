@@ -1,0 +1,20 @@
+/* Keyframe animations, exposed as `animate-*` utilities. */
+@theme {
+  /* Slow ambient drift of a background image (animate-liquid-drift). */
+  --animate-liquid-drift: liquid-drift 15s ease-in-out infinite;
+  @keyframes liquid-drift {
+    0%,
+    100% {
+      background-position: 50% 50%;
+    }
+    25% {
+      background-position: 20% 75%;
+    }
+    50% {
+      background-position: 80% 25%;
+    }
+    75% {
+      background-position: 35% 60%;
+    }
+  }
+}

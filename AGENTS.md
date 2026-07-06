@@ -55,6 +55,8 @@ pnpm lint      # run oxlint
 
 ## Registry — adding a component
 
+> **Before implementing any example, read [docs/IMPLEMENTATION-GUIDELINE.md](docs/IMPLEMENTATION-GUIDELINE.md)** — the collection's philosophy (simple · understandable · reusable; lean on libraries like GSAP/shadcn to delete code; promote reusable CSS to Tailwind `@utility`s; degrade gracefully; touch-first). Then tag per [docs/TAGS-GUIDELINE.md](docs/TAGS-GUIDELINE.md) and write the `principle` per [docs/PRINCIPLE-GUIDELINE.md](docs/PRINCIPLE-GUIDELINE.md).
+
 Categories and the component catalog live in `src/registry/`. Adding a component
 is **drop a folder** — no edits to `registry.ts` (it auto-discovers via
 `import.meta.glob`):
@@ -67,7 +69,8 @@ is **drop a folder** — no edits to `registry.ts` (it auto-discovers via
      - `preview` — optional; set to `'fit'` for **full-bleed** showcases (heroes, full backgrounds) designed for a whole viewport. On gallery cards the live preview is cropped to a fixed-height window (its vertical middle shows); on the details page it's scaled to fit the width (capped so libraries/tags stay in view). Omit for normal-sized components (buttons, cards, text), which render at native size. Framing + the hover **Expand-to-fullscreen** button live in `LivePreview` (`src/components/live-preview.tsx`); width-scaling is `ScaledPreview` (`src/components/scaled-preview.tsx`).
      - `description`, `tags` — shown on the card/details page; feed search. **Tag using the controlled vocabulary in [docs/TAGS-GUIDELINE.md](docs/TAGS-GUIDELINE.md)** (style / motion / trigger / capability groups + naming rules) — don't invent synonyms.
      - `libraries` — array of `LibraryId` (`src/registry/libraries.ts`, e.g. `['react', 'tailwind', 'gsap']`); rendered as badges.
-     - `principle` — optional hand-written **"aha"** of the effect: a short prose explanation + a fenced key snippet (Markdown), shown in the **Principle** tab. **Follow [docs/PRINCIPLE-GUIDELINE.md](docs/PRINCIPLE-GUIDELINE.md)** (explanation ≤ 80 words, name the load-bearing classes/APIs and say *why*).
+     - `utilities` — optional array of **custom Tailwind utility / token names** the showcase uses (from `src/styles/`, catalogued in `src/registry/utilities.ts`, e.g. `['liquid-glass', 'animate-liquid-drift']`). Rendered in the details page's **Utilities** section as hover-cards that reveal what each expands to. Omit if it only uses stock Tailwind. When you add a new `@utility`/token in `src/styles/`, add a matching entry to `utilities.ts`.
+     - `principle` — optional hand-written **"aha"** of the effect: a short prose explanation + a fenced key snippet (Markdown), shown in the **Principle** tab. **Follow [docs/PRINCIPLE-GUIDELINE.md](docs/PRINCIPLE-GUIDELINE.md)** (explanation ≤ 80 words, name the load-bearing classes/APIs and say *why*; if it relies on a custom utility, name and explain it).
      - `prompt` — optional; if omitted, one is auto-composed from the metadata + `principle` (falling back to `source`) via `buildPrompt` in `prompt.ts`, shown in the **Agent prompt** tab.
    - Do **not** set `source` — the registry injects it from `demo.tsx?raw`.
 2. Sidebar counts, gallery filtering/search, and the details page (Principle / Source / Agent prompt tabs) all update automatically.
@@ -75,10 +78,14 @@ is **drop a folder** — no edits to `registry.ts` (it auto-discovers via
 To add a **new category**, append an entry to `CATEGORIES` in `src/registry/categories.ts` (id + label + lucide icon). Current categories: buttons, cards, modals, hero, navigation, forms, feedback, data-display, animation, backgrounds, text, 3d.
 To add a **new library**, append an entry to `LIBRARIES` in `src/registry/libraries.ts`.
 
+### Custom CSS / reusable utilities
+
+Prefer Tailwind utility classes. When an effect needs custom CSS, express it as a **reusable Tailwind `@utility`** or theme token rather than a per-component `<style>` block, and put it in `src/styles/`, grouped by kind: `theme.css` (design tokens: `--font-*`, `--ease-*`, …), `animations.css` (`--animate-*` + `@keyframes`), `utilities.css` (`@utility`). `index.css` `@import`s these. Then **catalogue each in `src/registry/utilities.ts`** (name + kind + `summary` + the `css` it expands to) so showcases can list it in `utilities` and the details page can explain it. Load web fonts via a `<link>` in `index.html` (a build-time CSS `@import` of an external font is stripped by Vite); keep the `--font-*` token in `theme.css`.
+
 ## Navigation & the details page
 
 - No router: the open component is stored in the URL as `?component=<id>`. The card body stays interactive (hover/animations run live); a top-right shadcn icon button on each card sets it. The header **Back** button (and picking a category/tag/search) clears it. `App.tsx` reads it via `useUrlParam` and renders `ComponentDetails` when set, otherwise `TagFilterBar` + `ComponentGallery`.
-- The details page (`component-details.tsx`) shows: live preview, `libraries` badges, full description + clickable tags, and a shadcn `Tabs` **Code / Agent prompt** block, each copyable via `CopyButton` (`copy-button.tsx`).
+- The details page (`component-details.tsx`) shows: live preview, `libraries` badges, full description + clickable tags, an optional **Utilities** section (custom Tailwind utilities as shadcn `HoverCard` chips that reveal what each expands to, from `src/registry/utilities.ts`), and a shadcn `Tabs` **Principle / Source / Agent prompt** block, each copyable via `CopyButton` (`copy-button.tsx`).
 
 ## Filtering (category + tags + search)
 
@@ -98,7 +105,11 @@ Tag values follow the controlled vocabulary in [docs/TAGS-GUIDELINE.md](docs/TAG
 src/
   App.tsx                    # home page: sidebar + header + gallery
   main.tsx                   # React root, wraps app in ThemeProvider
-  index.css                  # Tailwind import + shadcn theme tokens (light/dark)
+  index.css                  # Tailwind import + shadcn theme tokens (light/dark) + @imports src/styles/*
+  styles/                    # custom CSS grouped by kind (imported by index.css)
+    theme.css                #   design tokens: --font-*, --ease-*
+    animations.css           #   --animate-* + @keyframes
+    utilities.css            #   custom @utility (e.g. liquid-glass)
   lib/utils.ts               # cn() helper
   hooks/
     use-url-param.ts         # router-free URL query-param state
@@ -119,6 +130,7 @@ src/
   registry/
     categories.ts            # category catalog (single source of truth)
     libraries.ts             # library catalog (LibraryId + labels)
+    utilities.ts             # custom Tailwind utility catalog (name/kind/summary/css)
     types.ts                 # Showcase type + defineShowcase() helper
     prompt.ts                # buildPrompt(): metadata + principle/source -> agent prompt
     registry.ts              # glob auto-discovery + ?raw source, filtering/counts/lookup
