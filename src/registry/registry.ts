@@ -1,5 +1,9 @@
 import { ALL_CATEGORY, type CategoryFilter, type CategoryId } from './categories'
+import { STATUSES, type ShowcaseStatus } from './statuses'
 import type { Showcase } from './types'
+
+/** How the gallery is ordered by creation date. */
+export type SortOrder = 'newest' | 'oldest'
 
 // ── Auto-discovered showcases ────────────────────────────────────────────────
 // Adding a component = drop a folder under `examples/<id>/` with:
@@ -46,18 +50,21 @@ export function getShowcase(id: string): Showcase | undefined {
 }
 
 /**
- * Filter the registry by category, a free-text query, and a set of tags.
- * Semantics: category (single) AND tags (intersection — must have all selected)
- * AND query (text). Selecting more tags narrows the results.
+ * Filter the registry by category, a free-text query, a set of tags, and a set
+ * of statuses. Semantics: category (single) AND tags (intersection — must have
+ * all selected) AND status (union — any of the selected) AND query (text).
+ * Empty `statuses` means "any status".
  */
 export function filterShowcases(
   category: CategoryFilter,
   query = '',
   tags: string[] = [],
+  statuses: ShowcaseStatus[] = [],
 ): Showcase[] {
   const q = query.trim().toLowerCase()
   return registry.filter((s) => {
     if (category !== ALL_CATEGORY && s.category !== category) return false
+    if (statuses.length && !statuses.includes(s.status)) return false
     if (tags.length) {
       const showcaseTags = new Set(s.tags ?? [])
       if (!tags.every((t) => showcaseTags.has(t))) return false
@@ -68,6 +75,32 @@ export function filterShowcases(
       .toLowerCase()
     return haystack.includes(q)
   })
+}
+
+/** Order a list by creation date (ties broken by name). Does not mutate input. */
+export function sortByCreated(list: Showcase[], order: SortOrder): Showcase[] {
+  const dir = order === 'oldest' ? 1 : -1
+  return [...list].sort(
+    (a, b) =>
+      dir * (Date.parse(a.created) - Date.parse(b.created)) ||
+      a.name.localeCompare(b.name),
+  )
+}
+
+/**
+ * How many showcases carry each status within the current category/query/tags
+ * scope (status itself excluded), so the filter can show live counts.
+ */
+export function getStatusCounts(
+  category: CategoryFilter,
+  query = '',
+  tags: string[] = [],
+): Record<ShowcaseStatus, number> {
+  const counts = Object.fromEntries(
+    STATUSES.map((s) => [s.id, 0]),
+  ) as Record<ShowcaseStatus, number>
+  for (const s of filterShowcases(category, query, tags)) counts[s.status]++
+  return counts
 }
 
 /**

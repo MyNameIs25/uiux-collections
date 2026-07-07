@@ -5,6 +5,8 @@ export default defineShowcase({
   id: 'glass-card',
   name: 'Glass Card',
   category: 'cards',
+  created: '2026-07-06',
+  status: 'done',
   description: 'A frosted-glass card with a blurred gradient accent.',
   libraries: ['react', 'tailwind'],
   tags: ['glass', 'blur'],

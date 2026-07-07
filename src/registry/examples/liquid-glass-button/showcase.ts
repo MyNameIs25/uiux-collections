@@ -5,6 +5,8 @@ export default defineShowcase({
   id: 'liquid-glass-button',
   name: 'Liquid Glass Button',
   category: 'buttons',
+  created: '2026-07-07',
+  status: 'done',
   description:
     'A capsule glass button that refracts a slowly drifting background like water, with a springy hover.',
   libraries: ['react', 'tailwind', 'css'],

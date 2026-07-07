@@ -5,6 +5,8 @@ export default defineShowcase({
   id: 'gradient-button',
   name: 'Gradient Button',
   category: 'buttons',
+  created: '2026-07-06',
+  status: 'done',
   description: 'A pill button with a gradient fill and a springy hover.',
   libraries: ['react', 'tailwind'],
   tags: ['gradient', 'hover', 'cta'],

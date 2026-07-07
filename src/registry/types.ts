@@ -1,6 +1,7 @@
 import type { ComponentType } from 'react'
 import type { CategoryId } from './categories'
 import type { LibraryId } from './libraries'
+import type { ShowcaseStatus } from './statuses'
 
 /**
  * A single showcase entry in the collection. Authored in
@@ -14,6 +15,13 @@ export interface Showcase {
   name: string
   /** Which category this belongs to (must exist in `categories.ts`). */
   category: CategoryId
+  /**
+   * When the showcase was created — an ISO date string (`'2026-07-07'`). Drives
+   * the "sort by created" control on the home page.
+   */
+  created: string
+  /** Lifecycle status (`'done' | 'in-progress' | 'archived'`); drives the filter. */
+  status: ShowcaseStatus
   /** Short description of the effect / component. */
   description?: string
   /** Libraries the implementation relies on (drives the details-page badges). */

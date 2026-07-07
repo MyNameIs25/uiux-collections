@@ -51,7 +51,7 @@ pnpm lint      # run oxlint
 ## State via URL params (no router)
 
 - There is **no router**. Global UI state lives in the URL query string. `useUrlParam(key, default)` (`src/hooks/use-url-param.ts`) reads/writes a param via `history.pushState` and broadcasts a custom event so all instances stay in sync.
-- The catalog filter uses `useCatalogParams()` (`src/hooks/use-catalog-params.ts`) → `?category=<id>` and `?q=<search>`. Add new URL-backed state with `useUrlParam`.
+- The catalog filter uses `useCatalogParams()` (`src/hooks/use-catalog-params.ts`) → `?category=<id>`, `?tags=`, `?status=`, `?sort=`, and `?q=<search>`. Add new URL-backed state with `useUrlParam`.
 
 ## Registry — adding a component
 
@@ -65,6 +65,7 @@ is **drop a folder** — no edits to `registry.ts` (it auto-discovers via
    - **`demo.tsx`** — the component itself, exported (e.g. `export function Foo() {...}`). This single file is both what renders live **and** what the details page shows as **Source** (imported verbatim via Vite `?raw`). Never write the code twice. Multi-file examples: put helpers alongside and import them.
    - **`showcase.ts`** — `export default defineShowcase({...})` with the metadata:
      - `id`, `name`, `category` (a valid `CategoryId`) — required; `id` is usually the folder name.
+     - `created`, `status` — required. `created` is an ISO date string (`'2026-07-07'`), usually the day you add the example (drives the home-page **sort by created**). `status` is one of `'done' | 'in-progress' | 'archived'` (`src/registry/statuses.ts`), shown as a coloured dot on the card and drives the **status filter**.
      - `Component` — import it from `./demo`.
      - `preview` — optional; set to `'fit'` for **full-bleed** showcases (heroes, full backgrounds) designed for a whole viewport. On gallery cards the live preview is cropped to a fixed-height window (its vertical middle shows); on the details page it's scaled to fit the width (capped so libraries/tags stay in view). Omit for normal-sized components (buttons, cards, text), which render at native size. Framing + the hover **Expand-to-fullscreen** button live in `LivePreview` (`src/components/live-preview.tsx`); width-scaling is `ScaledPreview` (`src/components/scaled-preview.tsx`).
      - `description`, `tags` — shown on the card/details page; feed search. **Tag using the controlled vocabulary in [docs/TAGS-GUIDELINE.md](docs/TAGS-GUIDELINE.md)** (style / motion / trigger / capability groups + naming rules) — don't invent synonyms.
@@ -87,13 +88,15 @@ Prefer Tailwind utility classes. When an effect needs custom CSS, express it as 
 - No router: the open component is stored in the URL as `?component=<id>`. The card body stays interactive (hover/animations run live); a top-right shadcn icon button on each card sets it. The header **Back** button (and picking a category/tag/search) clears it. `App.tsx` reads it via `useUrlParam` and renders `ComponentDetails` when set, otherwise `TagFilterBar` + `ComponentGallery`.
 - The details page (`component-details.tsx`) shows: live preview, `libraries` badges, full description + clickable tags, an optional **Utilities** section (custom Tailwind utilities as shadcn `HoverCard` chips that reveal what each expands to, from `src/registry/utilities.ts`), and a shadcn `Tabs` **Principle / Source / Agent prompt** block, each copyable via `CopyButton` (`copy-button.tsx`).
 
-## Filtering (category + tags + search)
+## Filtering (category + tags + status + search) and sorting
 
-All filter state lives in the URL via `useCatalogParams()` and combines as **category AND tags AND text**:
+All filter/sort state lives in the URL via `useCatalogParams()` and combines as **category AND tags AND status AND text**, then ordered by `?sort=`:
 
 - `?category=<id>` — single category (sidebar).
 - `?tags=a,b` — multiple tags, **intersection** (a component matches only if it has *all* selected tags; adding tags narrows results).
+- `?status=a,b` — multiple statuses, **union** (matches any selected). Rendered as chips in the `CatalogToolbar` above the tag bar; empty = any status. `getStatusCounts(category, query, tags)` in `registry.ts` feeds the counts.
 - `?q=<text>` — free-text over name/description/tags.
+- `?sort=newest|oldest` — order by `created` (default `newest`), via the shadcn `Select` in `CatalogToolbar`; `sortByCreated(list, order)` in `registry.ts`. Status and sort are global (they persist across category switches, unlike tags).
 
 Tags are rendered as clickable chips (`TagPill`, no leading `#`) in two places: the `TagFilterBar` under the header (scoped to the current category, with per-tag counts, collapsing past 12 behind a `…` expander) and the details page. Clicking a tag toggles it in `?tags=`. Switching category clears tags (they're category-scoped). `getTagCounts(category)` and `filterShowcases(category, query, tags)` live in `registry.ts`.
 
@@ -113,12 +116,14 @@ src/
   lib/utils.ts               # cn() helper
   hooks/
     use-url-param.ts         # router-free URL query-param state
-    use-catalog-params.ts    # category + search filter state
+    use-catalog-params.ts    # category + tags + status + sort + search filter state
     use-mobile.ts            # (shadcn) mobile breakpoint
   components/
     theme-provider.tsx       # dark/light context
     mode-toggle.tsx          # global dark-mode toggle button
     app-sidebar.tsx          # category sidebar (shadcn)
+    catalog-toolbar.tsx      # status filter chips + created-date sort (shadcn Select)
+    status-dot.tsx           # coloured status dot (done/in-progress/archived)
     tag-filter-bar.tsx       # collapsible tag chips under the header
     tag-pill.tsx             # clickable tag chip (no #), optional count
     component-gallery.tsx    # grid of live previews; top-right icon button opens details
@@ -130,10 +135,11 @@ src/
   registry/
     categories.ts            # category catalog (single source of truth)
     libraries.ts             # library catalog (LibraryId + labels)
+    statuses.ts              # status catalog (ShowcaseStatus + labels)
     utilities.ts             # custom Tailwind utility catalog (name/kind/summary/css)
     types.ts                 # Showcase type + defineShowcase() helper
     prompt.ts                # buildPrompt(): metadata + principle/source -> agent prompt
-    registry.ts              # glob auto-discovery + ?raw source, filtering/counts/lookup
+    registry.ts              # glob auto-discovery + ?raw source, filter/sort/counts/lookup
     index.ts                 # re-exports
     examples/<id>/           # one folder per showcase:
       demo.tsx               #   the component (rendered live + shown as Source via ?raw)

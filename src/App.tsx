@@ -1,6 +1,7 @@
 import { ArrowLeft } from 'lucide-react'
 import { AppSidebar } from '@/components/app-sidebar'
 import { ComponentDetails } from '@/components/component-details'
+import { CatalogToolbar } from '@/components/catalog-toolbar'
 import { ComponentGallery } from '@/components/component-gallery'
 import { TagFilterBar } from '@/components/tag-filter-bar'
 import { ModeToggle } from '@/components/mode-toggle'
@@ -62,6 +63,7 @@ function App() {
             <ComponentDetails showcase={selected} />
           ) : (
             <>
+              <CatalogToolbar />
               <TagFilterBar />
               <ComponentGallery />
             </>

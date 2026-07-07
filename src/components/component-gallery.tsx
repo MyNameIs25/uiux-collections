@@ -1,17 +1,21 @@
 import { ArrowRight, SearchX } from 'lucide-react'
 import { Button } from '@/components/base/button'
 import { LivePreview } from '@/components/live-preview'
+import { StatusDot } from '@/components/status-dot'
 import { useCatalogParams } from '@/hooks/use-catalog-params'
 import { useUrlParam } from '@/hooks/use-url-param'
-import { CATEGORIES, filterShowcases } from '@/registry'
+import { CATEGORIES, filterShowcases, sortByCreated } from '@/registry'
 
 const categoryLabel = (id: string) =>
   CATEGORIES.find((c) => c.id === id)?.label ?? id
 
 export function ComponentGallery() {
-  const { category, query, tags } = useCatalogParams()
+  const { category, query, tags, statuses, sort } = useCatalogParams()
   const [, setComponent] = useUrlParam('component', '')
-  const results = filterShowcases(category, query, tags)
+  const results = sortByCreated(
+    filterShowcases(category, query, tags, statuses),
+    sort,
+  )
 
   if (results.length === 0) {
     return (
@@ -33,7 +37,7 @@ export function ComponentGallery() {
 
   return (
     <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
-      {results.map(({ id, name, description, category: cat, Component, preview }) => (
+      {results.map(({ id, name, description, category: cat, status, Component, preview }) => (
         <article
           key={id}
           className="group relative flex flex-col overflow-hidden rounded-xl border bg-card text-card-foreground shadow-sm transition-colors hover:border-ring/60"
@@ -53,7 +57,10 @@ export function ComponentGallery() {
           <LivePreview variant="card" fit={preview === 'fit'} Component={Component} />
           <div className="border-t p-4">
             <div className="flex items-center justify-between gap-2">
-              <h3 className="font-medium">{name}</h3>
+              <h3 className="flex min-w-0 items-center gap-1.5 font-medium">
+                <StatusDot status={status} />
+                <span className="truncate">{name}</span>
+              </h3>
               <span className="shrink-0 rounded-full bg-secondary px-2 py-0.5 text-xs text-secondary-foreground">
                 {categoryLabel(cat)}
               </span>
