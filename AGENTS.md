@@ -56,6 +56,8 @@ pnpm lint      # run oxlint
 ## Registry — adding a component
 
 > **Before implementing any example, read [docs/IMPLEMENTATION-GUIDELINE.md](docs/IMPLEMENTATION-GUIDELINE.md)** — the collection's philosophy (simple · understandable · reusable; lean on libraries like GSAP/shadcn to delete code; promote reusable CSS to Tailwind `@utility`s; degrade gracefully; touch-first). Then tag per [docs/TAGS-GUIDELINE.md](docs/TAGS-GUIDELINE.md) and write the `principle` per [docs/PRINCIPLE-GUIDELINE.md](docs/PRINCIPLE-GUIDELINE.md).
+>
+> **When writing or editing anything that feeds a showcase's Agent prompt** — a hand-written `prompt`, the `buildPrompt` generator, or the metadata the prompt is composed from (`description`, `utilities`, and the `demo.tsx` source that ships verbatim) — you **MUST** first read [docs/PROMPT-GUIDELINE.md](docs/PROMPT-GUIDELINE.md).
 
 Categories and the component catalog live in `src/registry/`. Adding a component
 is **drop a folder** — no edits to `registry.ts` (it auto-discovers via
@@ -72,7 +74,7 @@ is **drop a folder** — no edits to `registry.ts` (it auto-discovers via
      - `libraries` — array of `LibraryId` (`src/registry/libraries.ts`, e.g. `['react', 'tailwind', 'gsap']`); rendered as badges.
      - `utilities` — optional array of **custom Tailwind utility / token names** the showcase uses (from `src/styles/`, catalogued in `src/registry/utilities.ts`, e.g. `['liquid-glass', 'animate-liquid-drift']`). Rendered in the details page's **Utilities** section as hover-cards that reveal what each expands to. Omit if it only uses stock Tailwind. When you add a new `@utility`/token in `src/styles/`, add a matching entry to `utilities.ts`.
      - `principle` — optional hand-written **"aha"** of the effect: a short prose explanation + a fenced key snippet (Markdown), shown in the **Principle** tab. **Follow [docs/PRINCIPLE-GUIDELINE.md](docs/PRINCIPLE-GUIDELINE.md)** (explanation ≤ 80 words, name the load-bearing classes/APIs and say *why*; if it relies on a custom utility, name and explain it).
-     - `prompt` — optional; if omitted, one is auto-composed from the metadata + `principle` (falling back to `source`) via `buildPrompt` in `prompt.ts`, shown in the **Agent prompt** tab.
+     - `prompt` — optional, shown in the **Agent prompt** tab (the one artifact meant to be copied into *another* agent with no repo access, for a faithful reproduction). **Usually leave it unset** — `buildPrompt` in `prompt.ts` auto-composes a self-contained prompt from the metadata + `principle` (the *why*) + the CSS of every custom utility in `utilities` + the full `demo.tsx` `source` (the ground-truth *what*). Only hand-write `prompt` for the rare cases in **[docs/PROMPT-GUIDELINE.md](docs/PROMPT-GUIDELINE.md)**; either way, follow that guide.
    - Do **not** set `source` — the registry injects it from `demo.tsx?raw`.
 2. Sidebar counts, gallery filtering/search, and the details page (Principle / Source / Agent prompt tabs) all update automatically.
 
@@ -139,7 +141,7 @@ src/
     statuses.ts              # status catalog (ShowcaseStatus + labels)
     utilities.ts             # custom Tailwind utility catalog (name/kind/summary/css)
     types.ts                 # Showcase type + defineShowcase() helper
-    prompt.ts                # buildPrompt(): metadata + principle/source -> agent prompt
+    prompt.ts                # buildPrompt(): metadata + principle + utility CSS + full source -> agent prompt
     registry.ts              # glob auto-discovery + ?raw source, filter/sort/counts/lookup
     index.ts                 # re-exports
     examples/<id>/           # one folder per showcase:
