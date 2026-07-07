@@ -12,6 +12,10 @@ export const LIBRARIES = {
   drei: { label: 'drei' },
   webgl: { label: 'WebGL' },
   'framer-motion': { label: 'Framer Motion' },
+  motion: { label: 'Motion' },
+  visx: { label: '@visx' },
+  d3: { label: 'D3' },
+  bklit: { label: 'Bklit UI' },
 } as const satisfies Record<string, { label: string }>
 
 export type LibraryId = keyof typeof LIBRARIES
