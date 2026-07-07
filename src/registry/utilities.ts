@@ -193,6 +193,77 @@ export const CUSTOM_UTILITIES: Record<string, CustomUtility> = {
   }
 }`,
   },
+  'animate-radial-breathe': {
+    name: 'animate-radial-breathe',
+    kind: 'animation',
+    file: 'src/styles/animations.css',
+    summary:
+      'Radar-ping breathing: scales an element 1→1.3→1 while fading 1→0.5→1 on a 2.2s ease-in-out loop. Put it on the ring group so the whole track + arc swells and settles like a heartbeat.',
+    css: `@theme {
+  --animate-radial-breathe: radial-breathe 2.2s ease-in-out infinite;
+  @keyframes radial-breathe {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50%      { transform: scale(1.3); opacity: 0.5; }
+  }
+}`,
+  },
+  'animate-radial-spin': {
+    name: 'animate-radial-spin',
+    kind: 'animation',
+    file: 'src/styles/animations.css',
+    summary:
+      'Rotates an element a full 360° on a 2.2s linear loop. Applied to the SVG so the dashed progress arc orbits the hub once per breathing cycle; the symmetric track ring hides that it is spinning too.',
+    css: `@theme {
+  --animate-radial-spin: radial-spin 2.2s linear infinite;
+  @keyframes radial-spin {
+    to { transform: rotate(360deg); }
+  }
+}`,
+  },
+  'animate-equalize': {
+    name: 'animate-equalize',
+    kind: 'animation',
+    file: 'src/styles/animations.css',
+    summary:
+      "Morphs a bottom-anchored bar's height through 35→90→50→75% on a 1.1s loop, like an audio equalizer. Give sibling bars different (negative) animation-delays to phase-shift them so they dance out of step.",
+    css: `@theme {
+  --animate-equalize: equalize 1.1s ease-in-out infinite;
+  @keyframes equalize {
+    0%, 100% { height: 35%; }
+    25%      { height: 90%; }
+    50%      { height: 50%; }
+    75%      { height: 75%; }
+  }
+}`,
+  },
+  'animate-tooltip-wipe-in': {
+    name: 'animate-tooltip-wipe-in',
+    kind: 'animation',
+    file: 'src/styles/animations.css',
+    summary:
+      'Reveals text left→right by animating `clip-path: inset(0 100% 0 0)` → `inset(0 0 0 0)` (the right clip edge sweeps across). Pair with `animate-tooltip-wipe-out` on the outgoing label in the same box for a curtain swap instead of a cross-fade.',
+    css: `@theme {
+  --animate-tooltip-wipe-in: tooltip-wipe-in 260ms cubic-bezier(0.32, 0.72, 0, 1) both;
+  @keyframes tooltip-wipe-in {
+    from { clip-path: inset(0 100% 0 0); }
+    to   { clip-path: inset(0 0 0 0); }
+  }
+}`,
+  },
+  'animate-tooltip-wipe-out': {
+    name: 'animate-tooltip-wipe-out',
+    kind: 'animation',
+    file: 'src/styles/animations.css',
+    summary:
+      'Hides text left→right by animating `clip-path: inset(0 0 0 0)` → `inset(0 0 0 100%)` (the left clip edge sweeps across). The inverse of `animate-tooltip-wipe-in`; both wipe the same direction so old + new text briefly overlap mid-swap.',
+    css: `@theme {
+  --animate-tooltip-wipe-out: tooltip-wipe-out 260ms cubic-bezier(0.32, 0.72, 0, 1) both;
+  @keyframes tooltip-wipe-out {
+    from { clip-path: inset(0 0 0 0); }
+    to   { clip-path: inset(0 0 0 100%); }
+  }
+}`,
+  },
   'font-orbitron': {
     name: 'font-orbitron',
     kind: 'font',
