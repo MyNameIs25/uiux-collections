@@ -82,6 +82,24 @@ export const CUSTOM_UTILITIES: Record<string, CustomUtility> = {
   }
 }`,
   },
+  'animate-border-beam': {
+    name: 'animate-border-beam',
+    kind: 'animation',
+    file: 'src/styles/animations.css',
+    summary:
+      'Spins a registered `<angle>` custom property (`--angle`) a full 360° on a linear loop. Pair it with a `conic-gradient(from var(--angle), …)` so a light beam travels around a border. The `@property` registration is required — an unregistered var cannot be interpolated.',
+    css: `@property --angle {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+@theme {
+  --animate-border-beam: border-beam 8s linear infinite;
+  @keyframes border-beam {
+    to { --angle: 360deg; }
+  }
+}`,
+  },
   'frosted-glass': {
     name: 'frosted-glass',
     kind: 'utility',

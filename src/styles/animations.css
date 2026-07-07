@@ -1,5 +1,24 @@
 /* Keyframe animations, exposed as `animate-*` utilities. */
+
+/* A registered `<angle>` custom property. Registration is what lets the browser
+   *interpolate* the angle — an unregistered `var(--angle)` can't be animated, so
+   the conic-gradient sweep below depends on this. See `animate-border-beam`. */
+@property --angle {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+
 @theme {
+  /* Spins `--angle` a full turn, driving a `conic-gradient(from var(--angle))`
+     so a light beam travels around a rounded rectangle's border (animate-border-beam). */
+  --animate-border-beam: border-beam 8s linear infinite;
+  @keyframes border-beam {
+    to {
+      --angle: 360deg;
+    }
+  }
+
   /* Slow ambient drift of a background image (animate-liquid-drift). */
   --animate-liquid-drift: liquid-drift 15s ease-in-out infinite;
   @keyframes liquid-drift {
