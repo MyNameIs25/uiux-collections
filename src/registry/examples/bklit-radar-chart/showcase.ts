@@ -5,7 +5,7 @@ export default defineShowcase({
   id: 'bklit-radar-chart',
   name: 'Bklit Radar Chart',
   category: 'data-display',
-  created: '2026-07-07',
+  created: '2026-07-07T21:43:48+09:00',
   status: 'done',
   description:
     'A composable multi-axis radar chart from Bklit UI: concentric grid, per-metric axes, and one filled polygon per series that draws out from the centre on mount, with hover highlighting a single series.',

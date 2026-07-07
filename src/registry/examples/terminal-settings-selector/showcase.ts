@@ -5,7 +5,7 @@ export default defineShowcase({
   id: 'terminal-settings-selector',
   name: 'Terminal Settings Selector',
   category: 'forms',
-  created: '2026-07-07',
+  created: '2026-07-07T23:45:53+09:00',
   status: 'done',
   preview: 'fit',
   description:

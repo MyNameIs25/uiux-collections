@@ -5,7 +5,7 @@ export default defineShowcase({
   id: 'bklit-bar-chart',
   name: 'Bklit Bar Chart',
   category: 'data-display',
-  created: '2026-07-07',
+  created: '2026-07-07T21:43:48+09:00',
   status: 'done',
   description:
     'A composable grouped bar chart from Bklit UI: each Bar series grows up from the baseline on mount with a staggered reveal, category labels fade around the crosshair on hover, and hovering one column dims the rest.',

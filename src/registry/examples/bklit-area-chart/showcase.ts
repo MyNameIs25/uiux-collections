@@ -5,7 +5,7 @@ export default defineShowcase({
   id: 'bklit-area-chart',
   name: 'Bklit Area Chart',
   category: 'data-display',
-  created: '2026-07-07',
+  created: '2026-07-07T21:43:48+09:00',
   status: 'done',
   description:
     'A composable time-series area chart from Bklit UI. Gradient-filled series grow up from the baseline with a clip reveal on mount, and a shared crosshair tooltip tracks the cursor across every band.',

@@ -5,7 +5,7 @@ export default defineShowcase({
   id: 'podcast-card',
   name: 'Podcast Player Card',
   category: 'cards',
-  created: '2026-07-07',
+  created: '2026-07-07T19:00:06+09:00',
   status: 'done',
   description:
     'A floating dark podcast player split into header / content / toolbar. A single orange accent threads through the play button, the played waveform, the playhead line and the volume fill; everything else is near-black and mono-labelled. Play to watch the playhead glide and the amber bars fill in; click or drag the waveform to scrub, drag the volume, cycle the speed.',

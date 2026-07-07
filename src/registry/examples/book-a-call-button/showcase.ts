@@ -5,7 +5,7 @@ export default defineShowcase({
   id: 'book-a-call-button',
   name: 'Book a Call Button',
   category: 'buttons',
-  created: '2026-07-07',
+  created: '2026-07-07T22:39:07+09:00',
   status: 'done',
   description:
     'A dark capsule CTA that shows only "Book a call" at rest. On hover it smoothly widens as a white arrow fades in on the right — the button making room for the next step. Move away and the arrow fades out and the width springs back. Pure CSS, no JS.',

@@ -5,7 +5,7 @@ export default defineShowcase({
   id: 'flip-countdown',
   name: 'Flip Countdown',
   category: 'data-display',
-  created: '2026-07-07',
+  created: '2026-07-07T00:42:17+09:00',
   status: 'done',
   description:
     'A split-flap (odometer-style) countdown clock. Each digit does a 3D flip as it changes; composes any number of digits into days:hours:minutes:seconds.',

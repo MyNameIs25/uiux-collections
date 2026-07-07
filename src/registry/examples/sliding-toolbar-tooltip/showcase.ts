@@ -5,7 +5,7 @@ export default defineShowcase({
   id: 'sliding-toolbar-tooltip',
   name: 'Sliding Toolbar Tooltip',
   category: 'navigation',
-  created: '2026-07-07',
+  created: '2026-07-07T23:45:53+09:00',
   status: 'done',
   description:
     'A dark floating capsule toolbar (Vercel Toolbar style). Hovering an icon lights a circular highlight and floats a dark label bubble above it. Move between icons and the bubble does not re-pop — a single element glides and reshapes to the next icon while its text is wiped over by clip-path masks, so old and new labels briefly overlap for a liquid, one-piece morph.',

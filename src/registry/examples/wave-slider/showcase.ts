@@ -5,7 +5,7 @@ export default defineShowcase({
   id: 'wave-slider',
   name: 'Wave-dip Slider',
   category: 'forms',
-  created: '2026-07-07',
+  created: '2026-07-07T19:00:06+09:00',
   status: 'done',
   description:
     'A capsule packed with equalizer bars, dragged like a waveform. The bars pinch down to almost nothing under the finger and ease back to full height within a few bars, so a valley travels along the track; bars left of the value stay dark and the rest light — a soft edge that marks the value even at rest — while a rounded bubble shows the live percentage. On release the dip melts back to an even row, the value boundary intact.',

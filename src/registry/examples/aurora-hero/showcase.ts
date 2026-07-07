@@ -5,7 +5,7 @@ export default defineShowcase({
   id: 'aurora-hero',
   name: 'Aurora Hero',
   category: 'hero',
-  created: '2026-07-06',
+  created: '2026-07-06T23:13:18+09:00',
   status: 'done',
   description:
     'A dark landing hero with drifting aurora gradients, a masked grid, and a staggered GSAP entrance.',

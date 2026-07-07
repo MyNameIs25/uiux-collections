@@ -5,7 +5,7 @@ export default defineShowcase({
   id: 'rainbow-border-beam-input',
   name: 'Rainbow Border Beam Input',
   category: 'forms',
-  created: '2026-07-07',
+  created: '2026-07-07T22:39:07+09:00',
   status: 'done',
   description:
     'A dark AI chat input whose rounded border is traced by a soft purple→orange light beam that drifts clockwise on its own — an ambient, no-interaction glow that gives the panel a quiet sense of life. Pure CSS: one rotating conic-gradient, reused as a hairline ring, a crisp beam, and a blurred outward halo.',

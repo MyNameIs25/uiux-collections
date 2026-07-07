@@ -16,8 +16,11 @@ export interface Showcase {
   /** Which category this belongs to (must exist in `categories.ts`). */
   category: CategoryId
   /**
-   * When the showcase was created — an ISO date string (`'2026-07-07'`). Drives
-   * the "sort by created" control on the home page.
+   * When the showcase was created — an ISO date-time string with an offset,
+   * e.g. `'2026-07-08T14:30:00+09:00'`. Include the time so same-day additions
+   * sort by recency (the "sort by created" control compares via `Date.parse`);
+   * a date-only value like `'2026-07-08'` still works but sorts as start-of-day,
+   * so it can't be ordered against siblings added the same day.
    */
   created: string
   /** Lifecycle status (`'done' | 'in-progress' | 'archived'`); drives the filter. */

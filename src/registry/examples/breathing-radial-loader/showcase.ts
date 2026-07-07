@@ -5,7 +5,7 @@ export default defineShowcase({
   id: 'breathing-radial-loader',
   name: 'Breathing Radial Loader',
   category: 'feedback',
-  created: '2026-07-07',
+  created: '2026-07-07T23:45:53+09:00',
   status: 'done',
   description:
     'A "preparing your data" loader on a cream card: a gradient-green hub with a morphing bar-chart glyph, ringed by a mint track and a spinning emerald arc. The whole ring group breathes — swelling and fading like a radar ping on every rotation — while the hub stays put. Auto-plays, no interaction.',

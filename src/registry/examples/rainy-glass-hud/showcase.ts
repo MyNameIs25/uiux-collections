@@ -5,7 +5,7 @@ export default defineShowcase({
   id: 'rainy-glass-hud',
   name: 'Rainy Glass HUD',
   category: 'backgrounds',
-  created: '2026-07-07',
+  created: '2026-07-07T11:52:55+09:00',
   status: 'in-progress',
   description:
     'A rainy-window night scene: raindrops slide, merge and leave trails down a blurred city-night photo, each one refracting the lights behind it. Floating glassmorphism clock and weather widgets frost the view.',

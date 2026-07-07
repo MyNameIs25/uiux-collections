@@ -5,7 +5,7 @@ export default defineShowcase({
   id: 'next-episode-countdown',
   name: 'Next Episode Countdown',
   category: 'buttons',
-  created: '2026-07-07',
+  created: '2026-07-07T22:23:10+09:00',
   status: 'done',
   description:
     'The streaming "up next" prompt as two independent press-and-hold controls. Hold the dark Next Episode pill and its grey ring runs down until it vanishes; hold the light Skip pill and its grey ring charges full of black. Each owns its own charge, and releasing springs it back.',

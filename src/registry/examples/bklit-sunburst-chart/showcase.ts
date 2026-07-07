@@ -5,7 +5,7 @@ export default defineShowcase({
   id: 'bklit-sunburst-chart',
   name: 'Bklit Sunburst Chart',
   category: 'data-display',
-  created: '2026-07-07',
+  created: '2026-07-07T21:43:48+09:00',
   status: 'done',
   description:
     'A hierarchical sunburst from Bklit UI: nested rings map a category tree, segments sweep in on mount, and clicking a segment zooms to drill into its children while the centre acts as a zoom-out hub.',

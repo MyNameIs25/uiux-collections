@@ -5,7 +5,7 @@ export default defineShowcase({
   id: 'radial-menu',
   name: 'Radial Menu',
   category: 'navigation',
-  created: '2026-07-07',
+  created: '2026-07-07T14:48:37+09:00',
   status: 'done',
   description:
     'A floating hamburger button that blooms into an 8-sector pie menu on click and snaps shut fast. Icons fan out on a circle with a staggered overshoot; Esc or an outside click dismisses it.',

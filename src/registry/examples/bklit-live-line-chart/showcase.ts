@@ -5,7 +5,7 @@ export default defineShowcase({
   id: 'bklit-live-line-chart',
   name: 'Bklit Live Line Chart',
   category: 'data-display',
-  created: '2026-07-07',
+  created: '2026-07-07T21:43:48+09:00',
   status: 'done',
   description:
     'A streaming real-time line from Bklit UI. New points push in on an interval while the time window scrolls left, the y-domain eases to fit, and a pulsing dot with a value badge rides the live tip.',

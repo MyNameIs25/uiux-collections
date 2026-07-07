@@ -5,7 +5,7 @@ export default defineShowcase({
   id: 'bklit-gauge-chart',
   name: 'Bklit Gauge Chart',
   category: 'data-display',
-  created: '2026-07-07',
+  created: '2026-07-07T21:43:48+09:00',
   status: 'done',
   description:
     'A composable notch gauge from Bklit UI that renders a single metric as a segmented radial arc with an animated formatted value in the center.',

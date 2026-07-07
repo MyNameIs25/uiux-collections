@@ -5,7 +5,7 @@ export default defineShowcase({
   id: 'elastic-slider',
   name: 'Elastic Tick-Wave Slider',
   category: 'forms',
-  created: '2026-07-07',
+  created: '2026-07-07T17:12:45+09:00',
   status: 'done',
   description:
     'A range slider whose track is a row of rounded tick marks. Dragging paints the passed ticks blue and lifts a travelling wave of taller ticks around the thumb; the filled dot chases the pointer with a springy lag, so a fast drag briefly splits it from the leading halo ring before it catches up and snaps to the nearest tick.',

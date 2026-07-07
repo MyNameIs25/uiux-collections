@@ -5,7 +5,7 @@ export default defineShowcase({
   id: 'gradient-text',
   name: 'Gradient Text',
   category: 'text',
-  created: '2026-07-06',
+  created: '2026-07-06T22:07:52+09:00',
   status: 'done',
   description: 'Headline text filled with a clipped gradient.',
   libraries: ['react', 'tailwind'],

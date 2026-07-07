@@ -5,7 +5,7 @@ export default defineShowcase({
   id: 'frosted-glass',
   name: 'Frosted Glass',
   category: 'cards',
-  created: '2026-07-07',
+  created: '2026-07-07T12:57:35+09:00',
   status: 'done',
   description:
     'An iced-glass card: a heavy backdrop-blur over a photo, dusted with a physical frost grain generated live by an SVG turbulence filter (no noise image) and a warm highlight along one corner.',

@@ -5,7 +5,7 @@ export default defineShowcase({
   id: 'segmented-tabs',
   name: 'Segmented Tabs',
   category: 'navigation',
-  created: '2026-07-07',
+  created: '2026-07-07T15:44:06+09:00',
   status: 'done',
   description:
     'A row of tabs with a grey "pill" that glides and reshapes under the selected one — position and width animate in lockstep, so switching to a distant tab slides through the middle rather than cross-fading. A lighter, quicker highlight tracks the hovered tab independently, so both can sit on different tabs at once.',

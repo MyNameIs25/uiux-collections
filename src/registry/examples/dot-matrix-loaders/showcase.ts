@@ -5,7 +5,7 @@ export default defineShowcase({
   id: 'dot-matrix-loaders',
   name: 'Dot-Matrix Loaders',
   category: 'feedback',
-  created: '2026-07-07',
+  created: '2026-07-07T13:50:13+09:00',
   status: 'done',
   description:
     'A stack of frosted-glass pills, each with a 3×3 dot matrix that lights up 1→9 in a reshuffled random order then hard-resets. The three run out of phase, reading like several background tasks working in parallel.',
