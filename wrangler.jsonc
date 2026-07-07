@@ -1,0 +1,12 @@
+{
+  // Deploy this static Vite SPA to Cloudflare Workers (free tier).
+  // No `main` = no Worker script; Cloudflare serves ./dist as static assets.
+  //   pnpm build && pnpm dlx wrangler deploy
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "uiux-collections",
+  "compatibility_date": "2026-07-07",
+  "assets": {
+    "directory": "./dist",
+    "not_found_handling": "single-page-application"
+  }
+}
