@@ -51,7 +51,7 @@ pnpm lint      # run oxlint
 ## State via URL params (no router)
 
 - There is **no router**. Global UI state lives in the URL query string. `useUrlParam(key, default)` (`src/hooks/use-url-param.ts`) reads/writes a param via `history.pushState` and broadcasts a custom event so all instances stay in sync.
-- The catalog filter uses `useCatalogParams()` (`src/hooks/use-catalog-params.ts`) → `?category=<id>`, `?tags=`, `?status=`, `?sort=`, and `?q=<search>`. Add new URL-backed state with `useUrlParam`.
+- The catalog filter uses `useCatalogParams()` (`src/hooks/use-catalog-params.ts`) → `?category=<id>`, `?tags=`, `?status=`, `?sort=`, `?q=<search>`, and `?page=<n>`. Add new URL-backed state with `useUrlParam`.
 
 ## Registry — adding a component
 
@@ -97,6 +97,7 @@ All filter/sort state lives in the URL via `useCatalogParams()` and combines as 
 - `?status=a,b` — multiple statuses, **union** (matches any selected). Rendered as chips in the `CatalogToolbar` above the tag bar; empty = any status. `getStatusCounts(category, query, tags)` in `registry.ts` feeds the counts.
 - `?q=<text>` — free-text over name/description/tags.
 - `?sort=newest|oldest` — order by `created` (default `newest`), via the shadcn `Select` in `CatalogToolbar`; `sortByCreated(list, order)` in `registry.ts`. Status and sort are global (they persist across category switches, unlike tags).
+- `?page=<n>` — 1-based gallery page (default `1`, omitted from the URL when 1). The `ComponentGallery` slices the sorted results into pages of `PAGE_SIZE` (6) and renders a shadcn `Pagination` (`components/base/pagination.tsx`) below the grid, hidden when everything fits on one page. **Any change to a filter/sort/search resets `?page=` to 1** (handled in `useCatalogParams` — the old page index no longer maps to the same results). The page links carry a real `href` for middle-click but intercept `onClick` to update the URL via `pushState` (no full navigation).
 
 Tags are rendered as clickable chips (`TagPill`, no leading `#`) in two places: the `TagFilterBar` under the header (scoped to the current category, with per-tag counts, collapsing past 12 behind a `…` expander) and the details page. Clicking a tag toggles it in `?tags=`. Switching category clears tags (they're category-scoped). `getTagCounts(category)` and `filterShowcases(category, query, tags)` live in `registry.ts`.
 
@@ -116,7 +117,7 @@ src/
   lib/utils.ts               # cn() helper
   hooks/
     use-url-param.ts         # router-free URL query-param state
-    use-catalog-params.ts    # category + tags + status + sort + search filter state
+    use-catalog-params.ts    # category + tags + status + sort + search + page filter state
     use-mobile.ts            # (shadcn) mobile breakpoint
   components/
     theme-provider.tsx       # dark/light context
