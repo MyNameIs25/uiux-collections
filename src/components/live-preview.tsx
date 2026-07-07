@@ -50,7 +50,9 @@ export function LivePreview({
     variant === 'card'
       ? fit
         ? 'h-40 overflow-hidden bg-muted/40'
-        : 'flex min-h-40 flex-1 items-center justify-center bg-muted/40 p-6'
+        : // Fixed-height window (not min-height) so a component with its own tall
+          // backdrop is cropped to its middle instead of stretching the card.
+          'flex h-40 items-center justify-center overflow-hidden bg-muted/40 p-6'
       : fit
         ? 'overflow-hidden rounded-xl border bg-muted/30'
         : 'flex min-h-64 items-center justify-center rounded-xl border bg-muted/30 p-8'
