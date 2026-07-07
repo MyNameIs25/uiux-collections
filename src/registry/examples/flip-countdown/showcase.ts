@@ -8,7 +8,7 @@ export default defineShowcase({
   description:
     'A split-flap (odometer-style) countdown clock. Each digit does a 3D flip as it changes; composes any number of digits into days:hours:minutes:seconds.',
   libraries: ['react', 'tailwind'],
-  tags: ['flip', '3d', 'auto', 'retro'],
+  tags: ['countdown', 'clock', 'flip', '3d', 'retro'],
   utilities: ['animate-flip-down', 'animate-flip-up'],
   Component: FlipClock,
   preview: 'fit',

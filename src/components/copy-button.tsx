@@ -6,10 +6,17 @@ import { cn } from '@/lib/utils'
 type CopyButtonProps = {
   value: string
   label?: string
+  /** Render just the icon (label becomes the tooltip / accessible name). */
+  iconOnly?: boolean
   className?: string
 }
 
-export function CopyButton({ value, label = 'Copy', className }: CopyButtonProps) {
+export function CopyButton({
+  value,
+  label = 'Copy',
+  iconOnly = false,
+  className,
+}: CopyButtonProps) {
   const [copied, setCopied] = useState(false)
 
   useEffect(() => {
@@ -28,16 +35,23 @@ export function CopyButton({ value, label = 'Copy', className }: CopyButtonProps
     }
   }
 
+  const icon = copied ? (
+    <Check className="size-3.5" />
+  ) : (
+    <Copy className="size-3.5" />
+  )
+
   return (
     <Button
       variant="secondary"
-      size="sm"
+      size={iconOnly ? 'icon' : 'sm'}
       onClick={copy}
-      className={cn('gap-1.5', className)}
+      className={cn(!iconOnly && 'gap-1.5', className)}
       aria-label={copied ? 'Copied' : label}
+      title={copied ? 'Copied' : label}
     >
-      {copied ? <Check className="size-3.5" /> : <Copy className="size-3.5" />}
-      {copied ? 'Copied' : label}
+      {icon}
+      {!iconOnly && (copied ? 'Copied' : label)}
     </Button>
   )
 }

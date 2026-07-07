@@ -82,6 +82,68 @@ export const CUSTOM_UTILITIES: Record<string, CustomUtility> = {
   }
 }`,
   },
+  'glass-hud': {
+    name: 'glass-hud',
+    kind: 'utility',
+    file: 'src/styles/utilities.css',
+    summary:
+      'An Apple-style frosted "HUD" card: a translucent 135° white gradient over a blur+saturate backdrop-filter, with a four-layer box-shadow that fakes a lit top edge, shaded bottom edge, hairline border and drop shadow. Shared by the clock and weather widgets.',
+    css: `@utility glass-hud {
+  border-radius: 24px;
+  background-image: linear-gradient(135deg,
+    rgb(255 255 255 / .1) 0%, rgb(255 255 255 / .04) 50%,
+    rgb(255 255 255 / .07) 100%);
+  -webkit-backdrop-filter: blur(20px) saturate(1.8);
+  backdrop-filter: blur(20px) saturate(1.8);
+  box-shadow: 0 8px 32px 0 rgb(0 0 0 / .3),
+    0 0 0 1px rgb(255 255 255 / .05),
+    inset 0 1px 0 0 rgb(255 255 255 / .15),
+    inset 0 -1px 0 0 rgb(0 0 0 / .1);
+  transition: .4s cubic-bezier(.16, 1, .3, 1);
+}`,
+  },
+  'animate-widget-slide-in': {
+    name: 'animate-widget-slide-in',
+    kind: 'animation',
+    file: 'src/styles/animations.css',
+    summary:
+      'Glass-card entrance: rises 20px, scales 0.95→1 and sharpens from blur(10px)→0 on an easeOutExpo curve. Uses `both` fill so an added `animation-delay` holds the hidden state (lets cards stagger in).',
+    css: `@theme {
+  --animate-widget-slide-in: widget-slide-in 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+  @keyframes widget-slide-in {
+    from { opacity: 0; transform: translateY(20px) scale(0.95); filter: blur(10px); }
+    to   { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+  }
+}`,
+  },
+  'animate-seconds-pulse': {
+    name: 'animate-seconds-pulse',
+    kind: 'animation',
+    file: 'src/styles/animations.css',
+    summary:
+      'Gentle 1s opacity heartbeat (0.5↔0.9) for the ticking seconds readout.',
+    css: `@theme {
+  --animate-seconds-pulse: seconds-pulse 1s ease-in-out infinite;
+  @keyframes seconds-pulse {
+    0%, 100% { opacity: 0.5; }
+    50%      { opacity: 0.9; }
+  }
+}`,
+  },
+  'animate-now-pulse': {
+    name: 'animate-now-pulse',
+    kind: 'animation',
+    file: 'src/styles/animations.css',
+    summary:
+      'Breathing halo for the "Now" cell: an outer box-shadow ring expands 0→8px and fades while an inner glow brightens, on a 3s loop.',
+    css: `@theme {
+  --animate-now-pulse: now-pulse 3s ease-in-out infinite;
+  @keyframes now-pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgb(102 204 255 / .4), inset 0 0 15px rgb(102 204 255 / .1); }
+    50%      { box-shadow: 0 0 0 8px rgb(102 204 255 / 0), inset 0 0 20px rgb(102 204 255 / .2); }
+  }
+}`,
+  },
   'font-orbitron': {
     name: 'font-orbitron',
     kind: 'font',

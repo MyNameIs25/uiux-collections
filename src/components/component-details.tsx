@@ -25,7 +25,7 @@ function CodePane({ value, copyLabel }: { value: string; copyLabel: string }) {
   return (
     <div className="relative">
       <div className="absolute top-2 right-2 z-10">
-        <CopyButton value={value} label={copyLabel} />
+        <CopyButton value={value} label={copyLabel} iconOnly />
       </div>
       <pre className="max-h-[28rem] overflow-auto rounded-lg border bg-muted/40 p-4 text-sm">
         <code className="font-mono">{value}</code>
@@ -123,9 +123,9 @@ function PrinciplePane({ value }: { value: string }) {
   return (
     <div className="relative">
       <div className="absolute top-2 right-2 z-10">
-        <CopyButton value={value} label="Copy principle" />
+        <CopyButton value={value} label="Copy principle" iconOnly />
       </div>
-      <div className="flex flex-col gap-4 rounded-lg border bg-muted/40 p-4 pr-14 text-sm">
+      <div className="flex flex-col gap-4 rounded-lg border bg-muted/40 p-4 pr-12 text-sm">
         {blocks.map((p, i) =>
           p.type === 'code' ? (
             <pre
