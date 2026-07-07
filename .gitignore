@@ -26,3 +26,6 @@ dist-ssr
 # Playwright MCP test artifacts
 .playwright-mcp/
 .gitnexus
+
+# Cloudflare Wrangler local state/cache
+.wrangler/

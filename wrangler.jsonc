@@ -5,6 +5,12 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "uiux-collections",
   "compatibility_date": "2026-07-07",
+  // Serve only on the custom domain below — disable the *.workers.dev URL
+  // (which was the awkward uiux-collections.uiux-collections.workers.dev).
+  "workers_dev": false,
+  // Custom domain (already attached in the dashboard); kept here so deploys
+  // reconcile it instead of only publishing the *.workers.dev URL.
+  "routes": [{ "pattern": "uiux-collections.idealtech.dev", "custom_domain": true }],
   "assets": {
     "directory": "./dist",
     "not_found_handling": "single-page-application"
