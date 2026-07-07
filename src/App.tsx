@@ -5,6 +5,7 @@ import { CatalogToolbar } from '@/components/catalog-toolbar'
 import { ComponentGallery } from '@/components/component-gallery'
 import { TagFilterBar } from '@/components/tag-filter-bar'
 import { ModeToggle } from '@/components/mode-toggle'
+import { SiteFooter } from '@/components/site-footer'
 import { Button } from '@/components/base/button'
 import {
   SidebarInset,
@@ -69,6 +70,7 @@ function App() {
             </>
           )}
         </main>
+        <SiteFooter />
       </SidebarInset>
     </SidebarProvider>
   )
