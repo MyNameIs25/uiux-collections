@@ -82,6 +82,37 @@ export const CUSTOM_UTILITIES: Record<string, CustomUtility> = {
   }
 }`,
   },
+  'frosted-glass': {
+    name: 'frosted-glass',
+    kind: 'utility',
+    file: 'src/styles/utilities.css',
+    summary:
+      'A heavy iced-glass surface: translucent white over a blur(1rem) backdrop-filter with layered drop + inset shadows (no border line). Its ::after paints a warm conic-gradient highlight along the top-left corner ring (padding-box mask subtracted from border-box). Pair with an SVG filter:url(#frost) grain layer for the frost speckle.',
+    css: `@utility frosted-glass {
+  position: relative;
+  border-radius: 0.5rem;
+  background-color: rgb(255 255 255 / .2);
+  backdrop-filter: blur(1rem);
+  box-shadow:
+    0 0 3rem -1rem rgb(0 0 0 / .2),
+    0 0 1rem -0.5rem rgb(0 0 0 / .2),
+    inset 0 0 3rem 0 rgb(255 255 255 / .15),
+    inset 0 0 0.25rem 0 rgb(255 255 255 / .15);
+  &::after {                 /* warm corner highlight = a masked border ring */
+    content: "";
+    position: absolute; inset: 0 auto auto 0;
+    width: min(100%, 1rem); height: min(100%, 1rem);
+    padding: min(100%, 1rem);
+    border: 1px solid transparent;
+    border-radius: inherit;
+    background: conic-gradient(from -90deg at center,
+      transparent 8%, #fff, transparent 17%) border-box;
+    mask: linear-gradient(transparent), linear-gradient(white);
+    mask-clip: padding-box, border-box;
+    mask-composite: subtract;
+  }
+}`,
+  },
   'glass-hud': {
     name: 'glass-hud',
     kind: 'utility',
