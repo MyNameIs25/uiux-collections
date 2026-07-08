@@ -55,7 +55,7 @@ pnpm lint      # run oxlint
 
 ## Registry — adding a component
 
-> **Before implementing any example, read [docs/IMPLEMENTATION-GUIDELINE.md](docs/IMPLEMENTATION-GUIDELINE.md)** — the collection's philosophy (simple · understandable · reusable; lean on libraries like GSAP/shadcn to delete code; promote reusable CSS to Tailwind `@utility`s; degrade gracefully; touch-first). Then tag per [docs/TAGS-GUIDELINE.md](docs/TAGS-GUIDELINE.md) and write the `principle` per [docs/PRINCIPLE-GUIDELINE.md](docs/PRINCIPLE-GUIDELINE.md).
+> **Before implementing any example, read [docs/IMPLEMENTATION-GUIDELINE.md](docs/IMPLEMENTATION-GUIDELINE.md)** — the collection's philosophy (simple · understandable · reusable; lean on libraries like GSAP/shadcn to delete code; promote reusable CSS to Tailwind `@utility`s; degrade gracefully; touch-first). **Anything animated must pick its engine off that file's CSS · GSAP · raw-rAF decision ladder** — hand-rolled lerp/`dt` rAF loops where GSAP fits are rejected in review. Then tag per [docs/TAGS-GUIDELINE.md](docs/TAGS-GUIDELINE.md) and write the `principle` per [docs/PRINCIPLE-GUIDELINE.md](docs/PRINCIPLE-GUIDELINE.md).
 >
 > **When writing or editing anything that feeds a showcase's Agent prompt** — a hand-written `prompt`, the `buildPrompt` generator, or the metadata the prompt is composed from (`description`, `utilities`, and the `demo.tsx` source that ships verbatim) — you **MUST** first read [docs/PROMPT-GUIDELINE.md](docs/PROMPT-GUIDELINE.md).
 
