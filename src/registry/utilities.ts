@@ -284,6 +284,30 @@ export const CUSTOM_UTILITIES: Record<string, CustomUtility> = {
   --font-homenaje: 'Homenaje', system-ui, sans-serif;
 }`,
   },
+  'font-roboto': {
+    name: 'font-roboto',
+    kind: 'font',
+    file: 'src/styles/theme.css',
+    summary:
+      'Applies the Roboto UI typeface (loaded via a <link> in index.html).',
+    css: `@theme {
+  --font-roboto: 'Roboto', system-ui, sans-serif;
+}`,
+  },
+  'animate-rotating': {
+    name: 'animate-rotating',
+    kind: 'animation',
+    file: 'src/styles/animations.css',
+    summary:
+      'A steady linear 360° spin, 2s per turn, after a 0.25s start delay — the submit button’s loading ring. The delay lets the capsule→circle shrink finish before the ring begins turning.',
+    css: `@theme {
+  --animate-rotating: rotating 2s 0.25s linear infinite;
+  @keyframes rotating {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+  }
+}`,
+  },
 }
 
 export function getUtility(name: string): CustomUtility | undefined {

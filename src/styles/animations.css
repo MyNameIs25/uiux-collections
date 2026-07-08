@@ -167,4 +167,17 @@
         inset 0 0 20px rgba(102, 204, 255, 0.2);
     }
   }
+
+  /* Steady linear spin, 2s per turn, starting after a 0.25s delay — drives the
+     submit button's loading ring (animate-rotating). The 0.25s delay lets the
+     capsule→circle shrink finish before the ring starts turning. */
+  --animate-rotating: rotating 2s 0.25s linear infinite;
+  @keyframes rotating {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
 }
