@@ -6,13 +6,15 @@ import {
   type KeyboardEvent as ReactKeyboardEvent,
   type PointerEvent as ReactPointerEvent,
 } from 'react'
+import gsap from 'gsap'
 
 const N = 40 // number of equalizer bars
 const BAR_MIN = 6 // bar height (px) at the bottom of the dip
 const BAR_MAX = 44 // resting / full bar height (px)
 const SIGMA = 0.06 // dip width as a fraction of the track (≈ ±3 bars)
 const RAMP = 0.045 // colour transition half-width around the value (≈ ±2 bars)
-const DAMP = 0.22 // per-frame chase toward the pointer — the springy trail
+const CHASE_SECS = 0.3 // how long the dip centre takes to catch a stopped pointer
+const DIP_SECS = 0.45 // dip strength fade in on grab / out on release
 const DARK = [63, 63, 70] as const // zinc-700 — selected / left of value
 const LIGHT = [212, 212, 216] as const // zinc-300 — unselected / right of value
 
@@ -32,53 +34,47 @@ export function WaveSlider() {
   const trackRef = useRef<HTMLDivElement>(null)
   const [value, setValue] = useState(38) // 0..100, the live percentage
 
-  // Animation state in refs so the rAF loop reads the latest without re-binding;
-  // `nudge()` re-renders to mirror them to the DOM.
-  const targetRef = useRef(0.38) // pointer progress 0..1
-  const posRef = useRef(0.38) // smoothed dip centre — lerps toward target (the trail)
-  const dipRef = useRef(0) // 0..1 dip strength; fades in on grab, out on release
-  const draggingRef = useRef(false)
-  const rafRef = useRef(0)
+  // GSAP tweens this proxy; `nudge()` re-renders (via onUpdate) to mirror it
+  // to the DOM each frame.
+  const anim = useRef({ c: 0.38, dip: 0 }).current // dip centre + dip strength
   const [, nudge] = useReducer((n: number) => n + 1, 0)
 
-  const animate = () => {
-    const reduce = reducedMotion()
-    posRef.current += (targetRef.current - posRef.current) * (reduce ? 1 : DAMP)
-    dipRef.current += ((draggingRef.current ? 1 : 0) - dipRef.current) * (reduce ? 1 : 0.18)
-    nudge()
-    const settled =
-      Math.abs(targetRef.current - posRef.current) < 5e-4 &&
-      Math.abs((draggingRef.current ? 1 : 0) - dipRef.current) < 2e-3
-    if (draggingRef.current || !settled) {
-      rafRef.current = requestAnimationFrame(animate)
-    } else {
-      posRef.current = targetRef.current
-      dipRef.current = draggingRef.current ? 1 : 0
-      rafRef.current = 0
-      nudge()
-    }
-  }
-  const startLoop = () => {
-    if (!rafRef.current) rafRef.current = requestAnimationFrame(animate)
-  }
+  // One persistent, retargetable tween per property (`gsap.quickTo`): every
+  // pointer move re-aims the SAME tween, so the valley trails the finger and
+  // settles on the last target — no hand-rolled lerp/rAF loop, and not a CSS
+  // transition (which can't trail a continuously moving target).
+  const cTo = useRef<ReturnType<typeof gsap.quickTo> | null>(null)
+  const dipTo = useRef<ReturnType<typeof gsap.quickTo> | null>(null)
+  useEffect(() => {
+    const secs = (s: number) => (reducedMotion() ? 0 : s)
+    cTo.current = gsap.quickTo(anim, 'c', {
+      duration: secs(CHASE_SECS),
+      ease: 'power3',
+      onUpdate: nudge,
+    })
+    dipTo.current = gsap.quickTo(anim, 'dip', {
+      duration: secs(DIP_SECS),
+      ease: 'power2.out',
+      onUpdate: nudge,
+    })
+    return () => gsap.killTweensOf(anim)
+  }, [anim])
 
   const setFromClientX = (clientX: number) => {
     const rect = trackRef.current?.getBoundingClientRect()
     if (!rect) return
     const raw = clamp((clientX - rect.left) / rect.width, 0, 1)
-    targetRef.current = raw
     setValue(Math.round(raw * 100))
-    startLoop()
+    cTo.current?.(raw)
   }
   const onMove = (e: PointerEvent) => setFromClientX(e.clientX)
   const onUp = () => {
-    draggingRef.current = false
+    dipTo.current?.(0)
     window.removeEventListener('pointermove', onMove)
-    startLoop()
   }
   const onPointerDown = (e: ReactPointerEvent<HTMLDivElement>) => {
     e.preventDefault()
-    draggingRef.current = true
+    dipTo.current?.(1)
     setFromClientX(e.clientX)
     window.addEventListener('pointermove', onMove)
     window.addEventListener('pointerup', onUp, { once: true })
@@ -86,9 +82,8 @@ export function WaveSlider() {
 
   const bump = (delta: number) => {
     const v = clamp(value + delta, 0, 100)
-    targetRef.current = v / 100
     setValue(v)
-    startLoop()
+    cTo.current?.(v / 100)
   }
   const onKeyDown = (e: ReactKeyboardEvent<HTMLDivElement>) => {
     const step: Record<string, number> = { ArrowRight: 1, ArrowUp: 1, ArrowLeft: -1, ArrowDown: -1 }
@@ -105,16 +100,13 @@ export function WaveSlider() {
   }
 
   useEffect(
-    () => () => {
-      if (rafRef.current) cancelAnimationFrame(rafRef.current)
-      window.removeEventListener('pointermove', onMove)
-    },
+    () => () => window.removeEventListener('pointermove', onMove),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [],
   )
 
-  const c = posRef.current
-  const dip = dipRef.current
+  const c = anim.c
+  const dip = anim.dip
 
   return (
     <div className="flex min-h-[16rem] w-full items-center justify-center bg-[#f4f4f5] px-8 py-14">

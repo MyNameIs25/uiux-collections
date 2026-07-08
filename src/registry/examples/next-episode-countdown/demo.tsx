@@ -1,41 +1,33 @@
 import { useEffect, useRef, useState, type PointerEvent as ReactPointerEvent } from 'react'
+import gsap from 'gsap'
 import { Play } from 'lucide-react'
 
 const R = 16 // ring radius
 const C = 2 * Math.PI * R // circumference — full ring dash length
-const CHARGE_MS = 1600 // hold this long to fill / empty the ring
-const DRAIN_MS = 550 // how fast it springs back once released
+const CHARGE_SECS = 1.6 // hold this long to fill / empty the ring
+const DRAIN_SECS = 0.55 // how fast it springs back once released
 
 /**
- * One press-and-hold charge value (0..1). A single rAF loop climbs it while a
- * pointer is held and drains it back when released. Each button owns its own
- * instance, so the two rings animate independently.
+ * One press-and-hold charge value (0..1). Two opposing linear GSAP tweens on a
+ * proxy object: holding tweens it toward 1, releasing tweens it back to 0, and
+ * `overwrite: true` kills the opposing tween so a mid-hold release simply
+ * retargets. Each button owns its own instance, so the two rings animate
+ * independently.
  */
 function useHoldCharge() {
   const [charge, setCharge] = useState(0)
-  const holding = useRef(false)
-  const value = useRef(0)
-  const raf = useRef(0)
-  const last = useRef(0)
+  const proxy = useRef({ v: 0 }).current
 
-  const frame = (ts: number) => {
-    if (last.current) {
-      const dt = ts - last.current
-      const delta = holding.current ? dt / CHARGE_MS : -dt / DRAIN_MS
-      value.current = Math.min(1, Math.max(0, value.current + delta))
-      setCharge(value.current)
-    }
-    last.current = ts
-    if (holding.current || value.current > 0) {
-      raf.current = requestAnimationFrame(frame)
-    } else {
-      raf.current = 0
-      last.current = 0
-    }
-  }
-  const kick = () => {
-    if (!raf.current) raf.current = requestAnimationFrame(frame)
-  }
+  // Constant *rate*, not constant duration: from a partial charge the tween
+  // only runs the remaining fraction of the full time (hence `ease: 'none'`).
+  const tweenTo = (end: 0 | 1, fullSecs: number) =>
+    gsap.to(proxy, {
+      v: end,
+      duration: fullSecs * Math.abs(end - proxy.v),
+      ease: 'none',
+      overwrite: true,
+      onUpdate: () => setCharge(proxy.v),
+    })
 
   const press = (e: ReactPointerEvent<HTMLButtonElement>) => {
     // Keep the hold alive if the finger drifts off the button.
@@ -44,17 +36,11 @@ function useHoldCharge() {
     } catch {
       /* pointer capture unavailable — hold still works via pointerleave */
     }
-    holding.current = true
-    last.current = 0
-    kick()
+    tweenTo(1, CHARGE_SECS)
   }
-  const release = () => {
-    holding.current = false
-    last.current = 0
-    kick() // let the loop drain it back down
-  }
+  const release = () => tweenTo(0, DRAIN_SECS)
 
-  useEffect(() => () => cancelAnimationFrame(raf.current), [])
+  useEffect(() => () => gsap.killTweensOf(proxy), [proxy])
 
   const handlers = {
     onPointerDown: press,

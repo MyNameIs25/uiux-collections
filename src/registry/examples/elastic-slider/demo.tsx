@@ -6,10 +6,12 @@ import {
   type KeyboardEvent as ReactKeyboardEvent,
   type PointerEvent as ReactPointerEvent,
 } from 'react'
+import gsap from 'gsap'
 
 const STEPS = 20 // 21 ticks; value runs 0..20
 const TICKS = STEPS + 1
-const DAMP = 0.2 // elastic follow: the dot moves 20% of the remaining gap each frame
+const CHASE_SECS = 0.35 // how long the dot takes to catch a stopped pointer
+const WAVE_SECS = 0.45 // wave crest fade in on grab / out on release
 const SPREAD = 2.2 // wave width, measured in ticks
 const BASE_H = 14 // resting tick height (px)
 const BUMP = 26 // extra height at the crest of the wave (px)
@@ -27,38 +29,34 @@ export function ElasticSlider() {
   const [dragging, setDragging] = useState(false)
   const [ripple, setRipple] = useState(0)
 
-  // Live animation state lives in refs so the rAF loop always reads the latest
-  // without being re-created; `nudge()` forces a render to mirror them to the DOM.
+  // GSAP tweens this proxy; `nudge()` re-renders (via onUpdate) to mirror it
+  // to the DOM. The raw/target refs aren't animated, just remembered.
+  const anim = useRef({ pos: 0, wave: 0 }).current // dot progress + wave strength
   const rawRef = useRef(0) // unsnapped pointer progress (0..1) — the leading ring
   const targetRef = useRef(0) // snapped target progress — where the dot is headed
-  const posRef = useRef(0) // visual dot progress — lerps toward target (the lag)
-  const waveRef = useRef(0) // 0..1 wave strength; fades in/out with dragging
-  const draggingRef = useRef(false)
-  const rafRef = useRef(0)
   const [, nudge] = useReducer((n: number) => n + 1, 0)
 
-  const animate = () => {
-    const reduce = reducedMotion()
-    // Damped chase — NOT a CSS transition — so the dot continuously trails a
-    // moving finger and only catches up once the pointer slows/stops.
-    posRef.current += (targetRef.current - posRef.current) * (reduce ? 1 : DAMP)
-    const wantWave = draggingRef.current && !reduce ? 1 : 0
-    waveRef.current += (wantWave - waveRef.current) * 0.15
-    nudge()
-    const settled =
-      Math.abs(targetRef.current - posRef.current) < 5e-4 && waveRef.current < 2e-3
-    if (draggingRef.current || !settled) {
-      rafRef.current = requestAnimationFrame(animate)
-    } else {
-      posRef.current = targetRef.current
-      waveRef.current = 0
-      rafRef.current = 0
-      nudge()
-    }
-  }
-  const startLoop = () => {
-    if (!rafRef.current) rafRef.current = requestAnimationFrame(animate)
-  }
+  // One persistent, retargetable tween per property (`gsap.quickTo`): every
+  // call re-aims the SAME tween, so the dot continuously trails a moving
+  // finger and settles exactly on the last target. This replaces a hand-rolled
+  // damped-chase rAF loop — NOT a CSS transition, which couldn't trail a
+  // moving finger this smoothly.
+  const posTo = useRef<ReturnType<typeof gsap.quickTo> | null>(null)
+  const waveTo = useRef<ReturnType<typeof gsap.quickTo> | null>(null)
+  useEffect(() => {
+    const secs = (s: number) => (reducedMotion() ? 0 : s)
+    posTo.current = gsap.quickTo(anim, 'pos', {
+      duration: secs(CHASE_SECS),
+      ease: 'power3',
+      onUpdate: nudge,
+    })
+    waveTo.current = gsap.quickTo(anim, 'wave', {
+      duration: secs(WAVE_SECS),
+      ease: 'power2.out',
+      onUpdate: nudge,
+    })
+    return () => gsap.killTweensOf(anim)
+  }, [anim])
 
   const setFromClientX = (clientX: number) => {
     const rect = areaRef.current?.getBoundingClientRect()
@@ -68,22 +66,22 @@ export function ElasticSlider() {
     const v = Math.round(raw * STEPS) // value snaps to the nearest tick
     targetRef.current = v / STEPS
     setValue(v)
-    startLoop()
+    posTo.current?.(v / STEPS)
+    nudge() // reflect the ring even when the snapped value didn't change
   }
 
   const onMove = (e: PointerEvent) => setFromClientX(e.clientX)
   const onUp = () => {
     setDragging(false)
-    draggingRef.current = false
     rawRef.current = targetRef.current // ring re-seats onto the dot's target
+    waveTo.current?.(0)
     window.removeEventListener('pointermove', onMove)
-    startLoop()
   }
   const onPointerDown = (e: ReactPointerEvent<HTMLDivElement>) => {
     e.preventDefault()
     setDragging(true)
-    draggingRef.current = true
     setRipple((r) => r + 1) // one-shot halo ripple
+    waveTo.current?.(1)
     setFromClientX(e.clientX)
     window.addEventListener('pointermove', onMove)
     window.addEventListener('pointerup', onUp, { once: true })
@@ -94,7 +92,7 @@ export function ElasticSlider() {
     rawRef.current = v / STEPS
     targetRef.current = v / STEPS
     setValue(v)
-    startLoop()
+    posTo.current?.(v / STEPS)
   }
   const onKeyDown = (e: ReactKeyboardEvent<HTMLDivElement>) => {
     const step: Record<string, number> = { ArrowRight: 1, ArrowUp: 1, ArrowLeft: -1, ArrowDown: -1 }
@@ -111,17 +109,13 @@ export function ElasticSlider() {
   }
 
   useEffect(
-    () => () => {
-      if (rafRef.current) cancelAnimationFrame(rafRef.current)
-      window.removeEventListener('pointermove', onMove)
-    },
+    () => () => window.removeEventListener('pointermove', onMove),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [],
   )
 
-  const pos = posRef.current
+  const { pos, wave } = anim
   const raw = rawRef.current
-  const wave = waveRef.current
   const reduce = reducedMotion()
 
   return (
@@ -172,7 +166,7 @@ export function ElasticSlider() {
             )}
           </div>
 
-          {/* Trailing filled dot — lerps toward the snapped target (the visible lag). */}
+          {/* Trailing filled dot — tweens toward the snapped target (the visible lag). */}
           <div
             aria-hidden
             className="pointer-events-none absolute top-1/2 size-4 rounded-full transition-transform duration-150"
