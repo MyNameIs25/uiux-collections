@@ -274,6 +274,16 @@ export const CUSTOM_UTILITIES: Record<string, CustomUtility> = {
   --font-orbitron: 'Orbitron', system-ui, sans-serif;
 }`,
   },
+  'font-homenaje': {
+    name: 'font-homenaje',
+    kind: 'font',
+    file: 'src/styles/theme.css',
+    summary:
+      'Applies the Homenaje display typeface (loaded via a <link> in index.html).',
+    css: `@theme {
+  --font-homenaje: 'Homenaje', system-ui, sans-serif;
+}`,
+  },
 }
 
 export function getUtility(name: string): CustomUtility | undefined {

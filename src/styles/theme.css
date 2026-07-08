@@ -6,6 +6,10 @@
      CSS @import of an external font does not survive Vite's bundling. */
   --font-orbitron: 'Orbitron', system-ui, sans-serif;
 
+  /* Homenaje display font for the WebGL Fog title (font-homenaje).
+     Loaded via a <link> in index.html for the same reason as Orbitron. */
+  --font-homenaje: 'Homenaje', system-ui, sans-serif;
+
   /* Springy easing with a slight overshoot (ease-spring). */
   --ease-spring: cubic-bezier(0.175, 0.885, 0.32, 2.2);
 }
