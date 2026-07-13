@@ -168,6 +168,22 @@
     }
   }
 
+  /* A single option easing in from its left edge: fade + slide-from-left +
+     a touch of scale (animate-option-in). Give each item in a row an increasing
+     `animation-delay` and they cascade left→right — a segmented control that
+     "unrolls" as it appears. `both` holds the hidden start through the delay. */
+  --animate-option-in: option-in 0.34s cubic-bezier(0.22, 1, 0.36, 1) both;
+  @keyframes option-in {
+    from {
+      opacity: 0;
+      transform: translateX(-10px) scale(0.94);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0) scale(1);
+    }
+  }
+
   /* Steady linear spin, 2s per turn, starting after a 0.25s delay — drives the
      submit button's loading ring (animate-rotating). The 0.25s delay lets the
      capsule→circle shrink finish before the ring starts turning. */

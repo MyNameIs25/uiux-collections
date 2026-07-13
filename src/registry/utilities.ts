@@ -54,6 +54,20 @@ export const CUSTOM_UTILITIES: Record<string, CustomUtility> = {
   }
 }`,
   },
+  'animate-option-in': {
+    name: 'animate-option-in',
+    kind: 'animation',
+    file: 'src/styles/animations.css',
+    summary:
+      'One option easing in from its left edge (fade + slide-from-left + slight scale). Give each item in a row an increasing `animation-delay` and they cascade left→right, so a segmented control "unrolls" as it appears. `both` holds the hidden start through the delay.',
+    css: `@theme {
+  --animate-option-in: option-in 0.34s cubic-bezier(0.22, 1, 0.36, 1) both;
+  @keyframes option-in {
+    from { opacity: 0; transform: translateX(-10px) scale(0.94); }
+    to   { opacity: 1; transform: translateX(0) scale(1); }
+  }
+}`,
+  },
   'animate-flip-down': {
     name: 'animate-flip-down',
     kind: 'animation',
