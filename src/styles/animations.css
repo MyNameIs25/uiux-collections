@@ -196,4 +196,43 @@
       transform: rotate(360deg);
     }
   }
+
+  /* Odometer roll: a value drops into place from above, sharpening out of a blur
+     (animate-like-roll). Replay it by remounting the element on a `key` change.
+     The `cubic-bezier(0.34,1.56,0.64,1)` back-ease overshoots slightly past the
+     resting position, so the number lands with a spring instead of easing flat. */
+  --animate-like-roll: like-roll 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  @keyframes like-roll {
+    from {
+      opacity: 0;
+      transform: translateY(-15px);
+      filter: blur(6px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+      filter: blur(0);
+    }
+  }
+
+  /* One-shot particle burst: a dot springs from the centre out to its own
+     `--tx`/`--ty` offset (set per-particle inline) at ~40% of the run, then
+     shrinks and fades in place — it does NOT return to centre (animate-particle-burst).
+     Remount the particle layer on a `key` to re-fire it. */
+  --animate-particle-burst: particle-burst 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)
+    both;
+  @keyframes particle-burst {
+    0% {
+      opacity: 0;
+      transform: translate(0, 0) scale(0);
+    }
+    40% {
+      opacity: 1;
+      transform: translate(var(--tx), var(--ty)) scale(1);
+    }
+    100% {
+      opacity: 0;
+      transform: translate(var(--tx), var(--ty)) scale(0);
+    }
+  }
 }

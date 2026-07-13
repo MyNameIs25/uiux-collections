@@ -322,6 +322,35 @@ export const CUSTOM_UTILITIES: Record<string, CustomUtility> = {
   }
 }`,
   },
+  'animate-like-roll': {
+    name: 'animate-like-roll',
+    kind: 'animation',
+    file: 'src/styles/animations.css',
+    summary:
+      'Odometer roll for a changing value: it drops into place from above (translateY(-15px)→0) while sharpening out of a blur(6px)→0 and fading in. The back-ease `cubic-bezier(0.34,1.56,0.64,1)` overshoots the rest position so the number lands with a spring. Replay it by remounting the element on a `key` change.',
+    css: `@theme {
+  --animate-like-roll: like-roll 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  @keyframes like-roll {
+    from { opacity: 0; transform: translateY(-15px); filter: blur(6px); }
+    to   { opacity: 1; transform: translateY(0);      filter: blur(0); }
+  }
+}`,
+  },
+  'animate-particle-burst': {
+    name: 'animate-particle-burst',
+    kind: 'animation',
+    file: 'src/styles/animations.css',
+    summary:
+      'One-shot confetti/spark burst: a dot springs from the centre out to its own `--tx`/`--ty` offset (set per-particle inline) by ~40% of the run, then shrinks and fades in place — it never returns to centre. Give each particle a different `--tx`/`--ty` (e.g. cos/sin around a circle) and remount the layer on a `key` to re-fire.',
+    css: `@theme {
+  --animate-particle-burst: particle-burst 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  @keyframes particle-burst {
+    0%   { opacity: 0; transform: translate(0, 0) scale(0); }
+    40%  { opacity: 1; transform: translate(var(--tx), var(--ty)) scale(1); }
+    100% { opacity: 0; transform: translate(var(--tx), var(--ty)) scale(0); }
+  }
+}`,
+  },
 }
 
 export function getUtility(name: string): CustomUtility | undefined {
