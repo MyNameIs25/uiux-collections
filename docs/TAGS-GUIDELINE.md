@@ -83,7 +83,7 @@ plain button gets no `button`, a plain card no `card`).
 
 - **Time:** `countdown` · `clock` · `timer` · `stopwatch` · `calendar`
 - **Collection / media:** `carousel` · `gallery` · `slideshow` · `lightbox`
-- **Disclosure / nav:** `accordion` · `tabs` · `dropdown` · `menu` · `tooltip` · `popover` · `pagination` · `breadcrumb`
+- **Disclosure / nav:** `accordion` · `tabs` · `dropdown` · `menu` · `tooltip` · `popover` · `pagination` · `breadcrumb` · `tree`
 - **Data:** `chart` · `stat` · `counter` · `progress` · `timeline` · `table` · `map`
 - **Overlay / feedback:** `toast` · `alert` · `dialog` · `drawer` · `banner`
 - **Status / input:** `avatar` · `rating` · `stepper` · `search` · `slider`
