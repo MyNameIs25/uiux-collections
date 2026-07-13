@@ -322,6 +322,20 @@ export const CUSTOM_UTILITIES: Record<string, CustomUtility> = {
   }
 }`,
   },
+  'animate-list-reveal': {
+    name: 'animate-list-reveal',
+    kind: 'animation',
+    file: 'src/styles/animations.css',
+    summary:
+      'A list row easing in — fade + a 6px rise on an ease-out curve. Give each row an increasing `animation-delay` (e.g. `i * 50ms`) and they cascade top→bottom as a panel opens. `both` holds the hidden start through the delay.',
+    css: `@theme {
+  --animate-list-reveal: list-reveal 0.28s cubic-bezier(0.22, 1, 0.36, 1) both;
+  @keyframes list-reveal {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+}`,
+  },
   'animate-like-roll': {
     name: 'animate-like-roll',
     kind: 'animation',

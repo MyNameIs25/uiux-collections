@@ -215,6 +215,21 @@
     }
   }
 
+  /* List item entrance: fade up a few px, ease-out (animate-list-reveal). Give
+     each row an increasing `animation-delay` and they cascade top→bottom as a
+     panel opens. `both` holds the hidden start through the delay. */
+  --animate-list-reveal: list-reveal 0.28s cubic-bezier(0.22, 1, 0.36, 1) both;
+  @keyframes list-reveal {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
   /* One-shot particle burst: a dot springs from the centre out to its own
      `--tx`/`--ty` offset (set per-particle inline) at ~40% of the run, then
      shrinks and fades in place — it does NOT return to centre (animate-particle-burst).
