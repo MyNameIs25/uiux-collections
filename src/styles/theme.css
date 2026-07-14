@@ -14,6 +14,13 @@
      Loaded via a <link> in index.html for the same reason as Orbitron. */
   --font-roboto: 'Roboto', system-ui, sans-serif;
 
+  /* JetBrains Mono for tabular/technical numerals (font-jetbrains-mono).
+     Loaded via a <link> in index.html for the same reason as Orbitron. Chosen
+     over a generic `monospace` because every digit is the same width *and* the
+     zero is slashed — that's what makes a column of figures read as a precision
+     instrument panel rather than as body copy. */
+  --font-jetbrains-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+
   /* Springy easing with a slight overshoot (ease-spring). */
   --ease-spring: cubic-bezier(0.175, 0.885, 0.32, 2.2);
 }

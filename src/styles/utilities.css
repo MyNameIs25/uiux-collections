@@ -107,3 +107,23 @@
     inset 0 -1px 0 0 rgba(0, 0, 0, 0.1);
   transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
+
+/* "Neon tube" — a fully-rounded capsule that appears to emit its own colour,
+   like a segment of an LED bar-graph meter. Drive it with two custom properties:
+
+     --neon       the colour (it paints both the fill and the light it throws)
+     --neon-glow  intensity multiplier, default 1 (0 = flat, 2 = blown-out bloom)
+
+   The glow is two same-hue `box-shadow`s at different radii — a tight bright
+   halo plus a wide soft one — which is how a real light source falls off, and
+   is far cheaper than `filter: drop-shadow()` when a page has a hundred of them
+   (box-shadow doesn't force the element into its own filter pass). Tying both
+   the fill and the halo to one `--neon` var is what keeps a segment a single
+   source of truth for its colour. */
+@utility neon-tube {
+  border-radius: 9999px;
+  background: var(--neon);
+  box-shadow:
+    0 0 calc(var(--neon-glow, 1) * 6px) color-mix(in srgb, var(--neon) 85%, transparent),
+    0 0 calc(var(--neon-glow, 1) * 20px) color-mix(in srgb, var(--neon) 45%, transparent);
+}

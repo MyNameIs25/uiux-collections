@@ -393,6 +393,39 @@ export const CUSTOM_UTILITIES: Record<string, CustomUtility> = {
   }
 }`,
   },
+  'neon-tube': {
+    name: 'neon-tube',
+    kind: 'utility',
+    file: 'src/styles/utilities.css',
+    summary:
+      'A fully-rounded capsule that appears to emit its own light, like one segment of an LED bar-graph meter. Set `--neon` to the colour (it paints the fill *and* the halo, so a segment has one source of truth) and `--neon-glow` to scale the bloom. The halo is two same-hue box-shadows at different radii — a tight bright one plus a wide soft one — which mimics real light falloff and is far cheaper than `filter: drop-shadow()` when a chart has a hundred segments.',
+    css: `@utility neon-tube {
+  border-radius: 9999px;
+  background: var(--neon);
+  box-shadow:
+    0 0 calc(var(--neon-glow, 1) * 6px)
+      color-mix(in srgb, var(--neon) 85%, transparent),
+    0 0 calc(var(--neon-glow, 1) * 20px)
+      color-mix(in srgb, var(--neon) 45%, transparent);
+}`,
+  },
+  'font-jetbrains-mono': {
+    name: 'font-jetbrains-mono',
+    kind: 'font',
+    file: 'src/styles/theme.css',
+    summary:
+      'JetBrains Mono, for technical/tabular numerals. Every digit is the same width *and* the zero is slashed — that is what makes a column of figures read as a precision instrument panel rather than as body copy. Loaded via a <link> in index.html (a build-time CSS @import of an external font is stripped by Vite).',
+    css: `@theme {
+  --font-jetbrains-mono: 'JetBrains Mono', ui-monospace,
+    SFMono-Regular, monospace;
+}
+
+<!-- index.html -->
+<link
+  href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap"
+  rel="stylesheet"
+/>`,
+  },
 }
 
 export function getUtility(name: string): CustomUtility | undefined {
