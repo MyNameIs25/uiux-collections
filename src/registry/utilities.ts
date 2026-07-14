@@ -365,6 +365,34 @@ export const CUSTOM_UTILITIES: Record<string, CustomUtility> = {
   }
 }`,
   },
+  'animate-calendar-sync-slide': {
+    name: 'animate-calendar-sync-slide',
+    kind: 'animation',
+    file: 'src/styles/animations.css',
+    summary:
+      'Indeterminate progress sweep: a short bar slides left→right across a clipped track forever. `translateX` is expressed in multiples of the bar’s own width (-110% → 360%), so it starts fully off the left and ends fully off the right regardless of the bar’s width. Loop it (`infinite`) while a task’s duration is unknown.',
+    css: `@theme {
+  --animate-calendar-sync-slide: calendar-sync-slide 1.3s ease-in-out infinite;
+  @keyframes calendar-sync-slide {
+    from { transform: translateX(-110%); }
+    to   { transform: translateX(360%); }
+  }
+}`,
+  },
+  'animate-calendar-sync-fill': {
+    name: 'animate-calendar-sync-fill',
+    kind: 'animation',
+    file: 'src/styles/animations.css',
+    summary:
+      'Quick determinate fill: a bar grows from empty to full pinned to its left edge (`scaleX(0)→scaleX(1)`, `origin-left`). Play once at the tail of an indeterminate loop to signal “done” right before the track collapses to a success dot.',
+    css: `@theme {
+  --animate-calendar-sync-fill: calendar-sync-fill 0.24s ease-in both;
+  @keyframes calendar-sync-fill {
+    from { transform: scaleX(0); }
+    to   { transform: scaleX(1); }
+  }
+}`,
+  },
 }
 
 export function getUtility(name: string): CustomUtility | undefined {

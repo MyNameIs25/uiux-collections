@@ -250,4 +250,32 @@
       transform: translate(var(--tx), var(--ty)) scale(0);
     }
   }
+
+  /* Indeterminate progress: a short bar sweeps left→right across its clipped
+     track forever (animate-calendar-sync-slide). translateX is in multiples of
+     the *bar's own* width — start fully off the left, end fully off the right —
+     so any bar width reads as the same edge-to-edge sweep. Loop it (`infinite`)
+     while a task's duration is unknown. */
+  --animate-calendar-sync-slide: calendar-sync-slide 1.3s ease-in-out infinite;
+  @keyframes calendar-sync-slide {
+    from {
+      transform: translateX(-110%);
+    }
+    to {
+      transform: translateX(360%);
+    }
+  }
+
+  /* Quick determinate fill: a bar grows from empty to full, pinned to its left
+     edge (animate-calendar-sync-fill). Play once at the end of an indeterminate
+     loop to signal "done" just before the track collapses. */
+  --animate-calendar-sync-fill: calendar-sync-fill 0.24s ease-in both;
+  @keyframes calendar-sync-fill {
+    from {
+      transform: scaleX(0);
+    }
+    to {
+      transform: scaleX(1);
+    }
+  }
 }
