@@ -6,7 +6,11 @@ import { cn } from '@/lib/utils'
 // TRACK_W (only the fill/colour change), then success collapses width → TRACK_H
 // so the pill becomes a circle. It's pinned to the card's right edge, so the
 // collapse reads as shrinking *toward* that edge, landing where the button was.
-const TRACK_W = 140
+// Kept deliberately narrow: this whole pill has `max-w-full`, so on a gallery
+// card it's clamped to the (narrower) card width while its icon + label + this
+// button don't shrink. A wide button would then spill past the pill's right
+// edge — hence a short "Sync" label in a 104px track rather than "Sync Events".
+const TRACK_W = 104
 const TRACK_H = 44
 
 type Phase = 'idle' | 'blur' | 'loading' | 'filling' | 'success'
@@ -95,7 +99,7 @@ export function CalendarSyncInlineConfirm() {
               phase === 'idle' ? 'opacity-100 blur-0' : 'pointer-events-none opacity-0 blur-[6px]',
             )}
           >
-            Sync Events
+            Sync
           </span>
 
           {/* Indeterminate track: a white bar sweeps across the clipped inset. */}
